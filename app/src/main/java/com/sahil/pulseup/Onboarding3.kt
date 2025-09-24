@@ -19,13 +19,13 @@ class Onboarding3 : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        /*
+
         val getStartedButton = findViewById<Button>(R.id.getStartedButton)
         getStartedButton.setOnClickListener {
-            val intent = Intent(this, ::class.java)
+            val intent = Intent(this,Login::class.java)
             startActivity(intent)
             finish()
         }
-        */
+
     }
 }
