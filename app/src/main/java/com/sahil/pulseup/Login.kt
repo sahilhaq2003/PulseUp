@@ -38,7 +38,7 @@ class Login : AppCompatActivity() {
             } else {
                 if (email == "test@example.com" && password == "123456") {
                     Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
-                    //val intent = Intent(this, Dashboard::class.java)
+                    val intent = Intent(this,Home::class.java)
                     startActivity(intent)
                     finish()
                 } else {
