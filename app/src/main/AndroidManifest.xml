@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PulseUp"
         tools:targetApi="31">
         <activity
+            android:name=".Calender"
+            android:exported="false" />
+        <activity
             android:name=".Home"
             android:exported="false" />
         <activity
@@ -42,6 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Profile"/>
     </application>
 
 </manifest>

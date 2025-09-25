@@ -29,6 +29,13 @@ class Login : AppCompatActivity() {
         val forgotPassword = findViewById<TextView>(R.id.forgotPassword)
         val signupText = findViewById<TextView>(R.id.signupText)
 
+        // Auto-forward if already logged in
+        if (UserPrefs.isLoggedIn(this)) {
+            startActivity(Intent(this, Home::class.java))
+            finish()
+            return
+        }
+
         loginButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
@@ -36,9 +43,12 @@ class Login : AppCompatActivity() {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
             } else {
-                if (email == "test@example.com" && password == "123456") {
+                val savedEmail = UserPrefs.getSavedEmail(this)
+                val savedPassword = UserPrefs.getSavedPassword(this)
+                if (email == savedEmail && password == savedPassword) {
+                    UserPrefs.setLoggedIn(this, true)
                     Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this,Home::class.java)
+                    val intent = Intent(this, Home::class.java)
                     startActivity(intent)
                     finish()
                 } else {

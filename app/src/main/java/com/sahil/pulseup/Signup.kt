@@ -37,8 +37,9 @@ class Signup : AppCompatActivity() {
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Sign Up successful (mock)", Toast.LENGTH_SHORT).show()
-                //val intent = Intent(this, Dashboard::class.java)
+                UserPrefs.saveUser(this, name, email, password)
+                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, Home::class.java)
                 startActivity(intent)
                 finish()
             }
