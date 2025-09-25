@@ -34,8 +34,12 @@ class LineChartView @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
 
-    // Simple demo data to mimic the screenshot trend
-    private val values = floatArrayOf(0.7f, 0.5f, 0.55f, 0.4f, 0.3f, 0.55f, 0.8f)
+    private var values: FloatArray = floatArrayOf()
+
+    fun setValues(newValues: FloatArray) {
+        values = newValues
+        invalidate()
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

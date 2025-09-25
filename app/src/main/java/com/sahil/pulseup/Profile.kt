@@ -4,11 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -51,8 +47,17 @@ class Profile : AppCompatActivity() {
         val phoneInput = findViewById<EditText>(R.id.phoneInput)
         val saveBtn = findViewById<Button>(R.id.saveBtn)
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
+        
+        // Hydration settings
+        val hydrationSwitch = findViewById<Switch>(R.id.hydrationSwitch)
+        val hydrationInterval = findViewById<SeekBar>(R.id.hydrationInterval)
+        val hydrationIntervalText = findViewById<TextView>(R.id.hydrationIntervalText)
+        val hydrationStartTime = findViewById<SeekBar>(R.id.hydrationStartTime)
+        val hydrationStartText = findViewById<TextView>(R.id.hydrationStartText)
+        val hydrationEndTime = findViewById<SeekBar>(R.id.hydrationEndTime)
+        val hydrationEndText = findViewById<TextView>(R.id.hydrationEndText)
 
-        // Prefill
+        // Prefill user data
         UserPrefs.getSavedName(this)?.let { nameInput.setText(it) }
         UserPrefs.getSavedEmail(this)?.let { emailInput.setText(it) }
         UserPrefs.getProfilePhoto(this)?.let { uriStr ->
@@ -61,11 +66,65 @@ class Profile : AppCompatActivity() {
                 profilePhoto.setImageURI(uri)
             }
         }
+        
+        // Prefill hydration settings
+        hydrationSwitch.isChecked = HydrationPrefs.isEnabled(this)
+        hydrationInterval.progress = HydrationPrefs.getIntervalHours(this) - 1
+        hydrationStartTime.progress = HydrationPrefs.getStartHour(this)
+        hydrationEndTime.progress = HydrationPrefs.getEndHour(this)
+        updateHydrationTexts()
 
         changePhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
             pickImage.launch(Intent.createChooser(intent, "Select Profile Photo"))
         }
+
+        // Hydration settings listeners
+        hydrationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && android.os.Build.VERSION.SDK_INT >= 33) {
+                val permission = android.Manifest.permission.POST_NOTIFICATIONS
+                if (checkSelfPermission(permission) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(arrayOf(permission), 1001)
+                    // Don't enable until permission result, UI switch remains checked; we'll enable in onRequestPermissionsResult
+                    return@setOnCheckedChangeListener
+                }
+            }
+            HydrationPrefs.setEnabled(this, isChecked)
+            Toast.makeText(this, if (isChecked) "Hydration reminders enabled" else "Hydration reminders disabled", Toast.LENGTH_SHORT).show()
+        }
+        
+        hydrationInterval.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    HydrationPrefs.setIntervalHours(this@Profile, progress + 1)
+                    updateHydrationTexts()
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        
+        hydrationStartTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    HydrationPrefs.setStartHour(this@Profile, progress)
+                    updateHydrationTexts()
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+        
+        hydrationEndTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    HydrationPrefs.setEndHour(this@Profile, progress)
+                    updateHydrationTexts()
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
         saveBtn.setOnClickListener {
             val name = nameInput.text.toString().trim()
@@ -87,6 +146,30 @@ class Profile : AppCompatActivity() {
             finish()
         }
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1001) {
+            val granted = grantResults.isNotEmpty() && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
+            val hydrationSwitch = findViewById<Switch>(R.id.hydrationSwitch)
+            hydrationSwitch.isChecked = granted
+            HydrationPrefs.setEnabled(this, granted)
+            if (!granted) {
+                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    
+    private fun updateHydrationTexts() {
+        val intervalHours = HydrationPrefs.getIntervalHours(this)
+        val startHour = HydrationPrefs.getStartHour(this)
+        val endHour = HydrationPrefs.getEndHour(this)
+        
+        findViewById<TextView>(R.id.hydrationIntervalText)?.text = "Every $intervalHours hour(s)"
+        findViewById<TextView>(R.id.hydrationStartText)?.text = "Start: ${String.format("%02d:00", startHour)}"
+        findViewById<TextView>(R.id.hydrationEndText)?.text = "End: ${String.format("%02d:00", endHour)}"
+    }
 }
+
 
 

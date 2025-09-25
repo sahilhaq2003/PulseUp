@@ -2,8 +2,11 @@ package com.sahil.pulseup
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import org.json.JSONObject
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Calender : AppCompatActivity() {
@@ -35,6 +39,10 @@ class Calender : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        
+        // Optional ActionBar (may be null if using a custom header)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Mood Journal"
 
     daysGrid = findViewById(R.id.daysGrid)
 
@@ -44,6 +52,7 @@ class Calender : AppCompatActivity() {
 
     val prevMonth = findViewById<ImageView?>(R.id.prevMonth)
     val nextMonth = findViewById<ImageView?>(R.id.nextMonth)
+    findViewById<ImageView?>(R.id.shareBtn)?.setOnClickListener { shareMoodSummary() }
 
         // Bottom nav click handlers
         findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
@@ -90,6 +99,7 @@ class Calender : AppCompatActivity() {
 
     private fun renderCalendar() {
     daysGrid?.removeAllViews()
+    daysGrid?.columnCount = 7
 
         val cal = Calendar.getInstance()
         cal.set(Calendar.MONTH, currentMonth)
@@ -103,6 +113,19 @@ class Calender : AppCompatActivity() {
         val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         val today = Calendar.getInstance()
+
+        // Add leading spacers so the first day aligns with weekday
+        val firstDayOfWeekIndex = (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7 // Monday=0
+        for (i in 0 until firstDayOfWeekIndex) {
+            val spacer = TextView(this).apply {
+                text = ""
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = 0
+                    columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
+                }
+            }
+            daysGrid?.addView(spacer)
+        }
 
         for (day in 1..maxDay) {
             val dayView = TextView(this).apply {
@@ -131,6 +154,12 @@ class Calender : AppCompatActivity() {
                         showMoodPicker(day)
                     }
                 }
+
+                // Highlight today
+                if (day == todayDay && currentMonth == today.get(Calendar.MONTH) && currentYear == today.get(Calendar.YEAR)) {
+                    setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
+                    setTextColor(resources.getColor(android.R.color.white, null))
+                }
             }
             daysGrid?.addView(dayView)
         }
@@ -150,7 +179,8 @@ class Calender : AppCompatActivity() {
                 if (selectedIndex >= 0) {
                     try {
                         moodHistory[day] = moods[selectedIndex]
-                        saveMoods()
+                        // Persist through a single API
+                        MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
                         renderCalendar()
                         Toast.makeText(this, "Mood saved", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
@@ -164,6 +194,17 @@ class Calender : AppCompatActivity() {
                 dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+            .setNeutralButton("Clear") { dialog, _ ->
+                try {
+                    if (moodHistory.containsKey(day)) {
+                        moodHistory.remove(day)
+                        MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
+                        renderCalendar()
+                        Toast.makeText(this, "Mood cleared", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (_: Exception) { }
+                dialog.dismiss()
+            }
             .show()
     }
 
@@ -198,5 +239,48 @@ class Calender : AppCompatActivity() {
             e.printStackTrace()
             Toast.makeText(this, "Unable to load saved moods", Toast.LENGTH_SHORT).show()
         }
+    }
+    
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.mood_menu, menu)
+        return true
+    }
+    
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.share_mood_summary -> {
+                shareMoodSummary()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+    
+    private fun shareMoodSummary() {
+        val monthName = Calendar.getInstance().apply {
+            set(Calendar.MONTH, currentMonth)
+            set(Calendar.YEAR, currentYear)
+        }.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+        
+        val moods = MoodPrefs.loadMoods(this, currentMonth, currentYear)
+        val moodCount = moods.size
+        val moodEmojis = moods.values.joinToString(" ")
+        
+        val summary = "My mood journal for $monthName $currentYear:\n" +
+                "📅 $moodCount days tracked\n" +
+                "😊 Moods: $moodEmojis\n\n" +
+                "Tracked with PulseUp - Your wellness companion! 💚"
+        
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, summary)
+        }
+        
+        startActivity(Intent.createChooser(shareIntent, "Share Mood Summary"))
     }
 }

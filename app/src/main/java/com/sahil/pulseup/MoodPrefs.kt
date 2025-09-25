@@ -65,4 +65,24 @@ object MoodPrefs {
         }
         return map
     }
+
+    fun setMood(context: Context, year: Int, month: Int, day: Int, emoji: String?) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val existing = loadMoods(context, month, year)
+        if (emoji.isNullOrEmpty()) {
+            existing.remove(day)
+        } else {
+            existing[day] = emoji
+        }
+        saveMoods(context, month, year, existing)
+    }
+
+    fun getMood(context: Context, year: Int, month: Int, day: Int): String? {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        // Prefer per-day key if available
+        prefs.getString("mood_${year}_${month}_$day", null)?.let { return it }
+        // Fall back to monthly map
+        val map = loadMoods(context, month, year)
+        return map[day]
+    }
 }
