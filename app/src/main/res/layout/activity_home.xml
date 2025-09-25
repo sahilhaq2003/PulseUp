@@ -441,63 +441,61 @@
             android:weightSum="3">
 
             <LinearLayout
+                android:id="@+id/navHabits"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Habits" >
+
                 <ImageView
-                    android:src="@android:drawable/ic_menu_agenda"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/bg_nav_item_selected"
-                    android:padding="4dp"
-                    app:tint="@android:color/holo_blue_light" />
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/imageView"
+                    android:layout_width="64dp"
                     android:layout_height="wrap_content"
-                    android:text="Habits"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/black"/>
+                    app:srcCompat="@mipmap/habits" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:id="@+id/navMood"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Mood" >
+
                 <ImageView
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:tint="@android:color/darker_gray" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mood"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/darker_gray"/>
+                    android:id="@+id/imageView2"
+                    android:layout_width="86dp"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@mipmap/moods" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/settingsTab"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:id="@+id/navProfile"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Profile" >
+
                 <ImageView
-                    android:src="@android:drawable/ic_menu_manage"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:tint="@android:color/darker_gray" />
-                <TextView
+                    android:id="@+id/imageView3"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Profile"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/darker_gray"/>
+                    android:layout_height="43dp"
+                    app:srcCompat="@mipmap/prof" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

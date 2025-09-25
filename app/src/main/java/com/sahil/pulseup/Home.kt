@@ -36,10 +36,18 @@ class Home : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Settings tab opens Profile
-        findViewById<LinearLayout>(R.id.settingsTab)?.setOnClickListener {
+        // Bottom nav: open Mood (calendar) or Profile
+        findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
+            startActivity(Intent(this, Calender::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
+            // Already on Home - you could scroll to top here if desired
+        }
+        findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
             startActivity(Intent(this, Profile::class.java))
         }
+
+        // (legacy settingsTab removed) bottom nav uses navProfile
     }
 
     override fun onResume() {

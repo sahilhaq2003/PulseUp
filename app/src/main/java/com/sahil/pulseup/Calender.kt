@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +18,7 @@ import java.util.*
 
 class Calender : AppCompatActivity() {
 
-    private lateinit var daysGrid: GridLayout
+    private var daysGrid: GridLayout? = null
     private val moodHistory = mutableMapOf<Int, String>()
 
     private var currentMonth = Calendar.getInstance().get(Calendar.MONTH)
@@ -35,19 +36,29 @@ class Calender : AppCompatActivity() {
             insets
         }
 
-        daysGrid = findViewById(R.id.daysGrid)
+    daysGrid = findViewById(R.id.daysGrid)
 
-        loadMoods()
+    loadMoods()
 
-        val backBtn: ImageView = findViewById(R.id.backBtn)
-        backBtn.setOnClickListener { finish() }
+    findViewById<ImageView?>(R.id.backBtn)?.setOnClickListener { finish() }
 
-        val prevMonth: ImageView = findViewById(R.id.prevMonth)
-        val nextMonth: ImageView = findViewById(R.id.nextMonth)
+    val prevMonth = findViewById<ImageView?>(R.id.prevMonth)
+    val nextMonth = findViewById<ImageView?>(R.id.nextMonth)
 
-        renderCalendar()
+        // Bottom nav click handlers
+        findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
+            // already on Mood, do nothing
+        }
+        findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
+            startActivity(android.content.Intent(this, Profile::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
+            startActivity(android.content.Intent(this, Home::class.java))
+        }
 
-        prevMonth.setOnClickListener {
+    renderCalendar()
+
+        prevMonth?.setOnClickListener {
             currentMonth--
             if (currentMonth < 0) {
                 currentMonth = 11
@@ -58,7 +69,7 @@ class Calender : AppCompatActivity() {
             renderCalendar()
         }
 
-        nextMonth.setOnClickListener {
+        nextMonth?.setOnClickListener {
             currentMonth++
             if (currentMonth > 11) {
                 currentMonth = 0
@@ -78,16 +89,16 @@ class Calender : AppCompatActivity() {
     }
 
     private fun renderCalendar() {
-        daysGrid.removeAllViews()
+    daysGrid?.removeAllViews()
 
         val cal = Calendar.getInstance()
         cal.set(Calendar.MONTH, currentMonth)
         cal.set(Calendar.YEAR, currentYear)
         cal.set(Calendar.DAY_OF_MONTH, 1)
 
-        val monthTitle: TextView = findViewById(R.id.monthTitle)
-        val monthName = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
-        monthTitle.text = "$monthName $currentYear"
+    val monthTitle = findViewById<TextView?>(R.id.monthTitle)
+    val monthName = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+    monthTitle?.text = "$monthName $currentYear"
 
         val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
@@ -121,7 +132,7 @@ class Calender : AppCompatActivity() {
                     }
                 }
             }
-            daysGrid.addView(dayView)
+            daysGrid?.addView(dayView)
         }
     }
 
