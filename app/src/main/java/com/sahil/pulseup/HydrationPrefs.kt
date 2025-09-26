@@ -13,6 +13,8 @@ object HydrationPrefs {
     private const val KEY_START_HOUR = "start_hour"
     private const val KEY_END_HOUR = "end_hour"
     private const val KEY_LAST_SCHEDULED_AT = "last_scheduled_at"
+    private const val KEY_NEXT_HOUR = "next_hour"
+    private const val KEY_NEXT_MINUTE = "next_minute"
     
     private const val WORK_NAME = "hydration_reminder_work"
     
@@ -127,6 +129,18 @@ object HydrationPrefs {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         if (!prefs.getBoolean(KEY_ENABLED, false)) return "Reminders off"
 
+        // If an explicit next time was saved, show that
+        val explicitHour = prefs.getInt(KEY_NEXT_HOUR, -1)
+        val explicitMinute = prefs.getInt(KEY_NEXT_MINUTE, -1)
+        if (explicitHour in 0..23 && explicitMinute in 0..59) {
+            val hour = explicitHour
+            val minute = explicitMinute
+            val ampm = if (hour >= 12) "PM" else "AM"
+            val displayHour = ((hour + 11) % 12) + 1
+            val displayMinute = String.format(Locale.getDefault(), "%02d", minute)
+            return "Next reminder: $displayHour:$displayMinute $ampm"
+        }
+
         val interval = getIntervalHours(context)
         val startHour = getStartHour(context)
         val endHour = getEndHour(context)
@@ -158,5 +172,22 @@ object HydrationPrefs {
         val displayHour = ((hour + 11) % 12) + 1
         val displayMinute = String.format(Locale.getDefault(), "%02d", minute)
         return "Next reminder: $displayHour:$displayMinute $ampm"
+    }
+
+    /**
+     * Save a specific next reminder time (hour, minute) and reschedule reminders.
+     */
+    fun setNextReminderTime(context: Context, hour: Int, minute: Int) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(KEY_NEXT_HOUR, hour.coerceIn(0, 23))
+            .putInt(KEY_NEXT_MINUTE, minute.coerceIn(0, 59))
+            .apply()
+
+        // If reminders are enabled, reschedule to pick up the explicit next time
+        if (isEnabled(context)) {
+            // scheduleReminders is private but callable from within the object
+            scheduleReminders(context)
+        }
     }
 }

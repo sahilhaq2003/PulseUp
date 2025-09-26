@@ -66,6 +66,11 @@ class Home : AppCompatActivity() {
         loadHabits()
         updateMoodTrendChart()
         updateHydrationCard()
+
+        // Hydration add button -> open CreateReminder
+        findViewById<android.widget.ImageButton>(R.id.hydrationAddBtn)?.setOnClickListener {
+            startActivity(Intent(this, CreateReminder::class.java))
+        }
     }
 
     override fun onResume() {

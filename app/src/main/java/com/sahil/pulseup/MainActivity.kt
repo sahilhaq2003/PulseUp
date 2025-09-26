@@ -25,5 +25,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Onboarding1::class.java)
             startActivity(intent)
         }
+
+        // If user already completed onboarding / is logged in, skip onboarding flow
+        if (UserPrefs.isLoggedIn(this)) {
+            startActivity(Intent(this, Home::class.java))
+            finish()
+            return
+        }
     }
 }

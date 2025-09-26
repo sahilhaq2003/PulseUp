@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_root"
+    android:id="@+id/profile_scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:background="@color/colorWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profile_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/profilePhoto"
@@ -21,29 +27,14 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193" />
-
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Save"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phoneInput" />
+        app:layout_constraintVertical_bias="0.113" />
 
     <EditText
         android:id="@+id/phoneInput"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:hint="Phone"
@@ -60,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:hint="Email"
@@ -77,7 +68,7 @@
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Logout"
@@ -87,13 +78,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/saveBtn" />
 
-    <!-- Hydration Settings -->
     <TextView
         android:id="@+id/hydrationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
         android:text="💧 Hydration Reminders"
         android:textColor="@android:color/black"
         android:textSize="18sp"
@@ -105,7 +95,8 @@
         android:id="@+id/hydrationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
         android:text="Enable reminders"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,8 +106,8 @@
         android:id="@+id/hydrationIntervalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="12dp"
         android:text="Every 2 hour(s)"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
@@ -128,11 +119,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:max="11"
         android:progress="1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hydrationIntervalText" />
 
@@ -140,8 +132,8 @@
         android:id="@+id/hydrationStartText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="20dp"
         android:text="Start: 08:00"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
@@ -153,11 +145,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="20dp"
         android:max="23"
         android:progress="8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hydrationStartText" />
 
@@ -165,8 +158,8 @@
         android:id="@+id/hydrationEndText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="60dp"
         android:text="End: 22:00"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
@@ -185,15 +178,17 @@
         android:progress="22"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationEndText" />
+        app:layout_constraintTop_toBottomOf="@id/hydrationEndText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/nameInput"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/colorPrimary"
         android:hint="Full name"
@@ -208,7 +203,7 @@
         android:id="@+id/changePhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Change Photo"
         android:textColor="@color/colorWhite"
@@ -216,6 +211,23 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePhoto" />
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Save"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phoneInput" />
+
+    <!-- Hydration Settings -->
 
     <ImageButton
         android:id="@+id/backBtn"
@@ -230,7 +242,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
 
 
 
