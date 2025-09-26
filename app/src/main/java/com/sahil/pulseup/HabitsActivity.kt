@@ -10,20 +10,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.cardview.widget.CardView
 import android.widget.LinearLayout
 import android.widget.TextView
-import java.util.*
 
-
-class Home : AppCompatActivity() {
+class HabitsActivity : AppCompatActivity() {
     private lateinit var habitsContainer: LinearLayout
-    private var lineChart: com.sahil.pulseup.ui.LineChartView? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_habits)
         
         // If no user is logged in, send to Login
         if (!UserPrefs.isLoggedIn(this)) {
@@ -32,7 +28,7 @@ class Home : AppCompatActivity() {
             return
         }
         
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home_main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.habits_main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -44,81 +40,30 @@ class Home : AppCompatActivity() {
         findViewById<ImageView>(R.id.addHabitBtn)?.setOnClickListener {
             showAddHabitDialog()
         }
-
-        val moodJournalCard: CardView = findViewById(R.id.moodJournalCard)
-        moodJournalCard.setOnClickListener {
-            val intent = Intent(this,Calender::class.java)
-            startActivity(intent)
+        
+        // Back button
+        findViewById<ImageView>(R.id.backBtn)?.setOnClickListener {
+            finish()
         }
-
-        // Bottom nav: open Mood (calendar) or Profile
+        
+        // Bottom navigation
         findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
             startActivity(Intent(this, Calender::class.java))
         }
         findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            startActivity(Intent(this, HabitsActivity::class.java))
+            // Already on Habits - do nothing
         }
         findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
             startActivity(Intent(this, Profile::class.java))
         }
-
-        lineChart = findViewById(R.id.lineChart)
+        
         loadHabits()
-        updateMoodTrendChart()
-        updateHydrationCard()
     }
 
     override fun onResume() {
         super.onResume()
-        // Update preview emoji for today
-        try {
-            val today = Calendar.getInstance()
-            val month = today.get(Calendar.MONTH)
-            val year = today.get(Calendar.YEAR)
-            val day = today.get(Calendar.DAY_OF_MONTH)
-            val moods = MoodPrefs.loadMoods(this, month, year)
-            val preview = findViewById<TextView>(R.id.moodPreviewEmoji)
-            preview?.text = moods[day] ?: "🙂"
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        
         // Refresh habits when returning to screen
         loadHabits()
-        updateMoodTrendChart()
-        updateHydrationCard()
-    }
-
-    private fun updateMoodTrendChart() {
-        try {
-            // Map emojis to scores 0..1 for simple charting
-            fun emojiToScore(emoji: String?): Float = when (emoji) {
-                "😍" -> 1.0f
-                "😊" -> 0.8f
-                "😐" -> 0.5f
-                "😢" -> 0.2f
-                "😡" -> 0.1f
-                else -> 0.6f
-            }
-
-            val values = FloatArray(7)
-            for (i in 6 downTo 0) {
-                val c = Calendar.getInstance()
-                c.add(Calendar.DAY_OF_YEAR, -i)
-                val month = c.get(Calendar.MONTH)
-                val year = c.get(Calendar.YEAR)
-                val day = c.get(Calendar.DAY_OF_MONTH)
-                values[6 - i] = emojiToScore(MoodPrefs.getMood(this, year, month, day))
-            }
-            lineChart?.setValues(values)
-        } catch (_: Exception) { }
-    }
-
-    private fun updateHydrationCard() {
-        try {
-            val text = findViewById<TextView>(R.id.hydrationNextText)
-            text?.text = HydrationPrefs.getNextReminderText(this)
-        } catch (_: Exception) { }
     }
     
     private fun loadHabits() {
@@ -138,35 +83,9 @@ class Home : AppCompatActivity() {
             return
         }
         
-        // Show only first 2 habits
-        val habitsToShow = habits.take(2)
-        habitsToShow.forEach { habit ->
+        habits.forEach { habit ->
             val habitView = createHabitView(habit)
             habitsContainer.addView(habitView)
-        }
-        
-        // Add "See More" button if there are more than 2 habits
-        if (habits.size > 2) {
-            val seeMoreButton = Button(this).apply {
-                text = "See More (${habits.size - 2} more)"
-                textSize = 14f
-                setTextColor(resources.getColor(R.color.colorWhite, null))
-                setPadding(24, 12, 24, 12)
-                // Add rounded corners
-                background = resources.getDrawable(R.drawable.rounded_button_bg, null)
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    setMargins(16, 12, 16, 0)
-                }
-            }
-            
-            seeMoreButton.setOnClickListener {
-                startActivity(Intent(this, HabitsActivity::class.java))
-            }
-            
-            habitsContainer.addView(seeMoreButton)
         }
     }
     

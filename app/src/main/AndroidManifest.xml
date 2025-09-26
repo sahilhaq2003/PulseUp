@@ -23,6 +23,9 @@
             android:name=".Home"
             android:exported="false" />
         <activity
+            android:name=".HabitsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Forgetpassword"
             android:exported="false" />
         <activity
