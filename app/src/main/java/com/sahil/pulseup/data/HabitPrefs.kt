@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.data
 
 import android.content.Context
 import org.json.JSONArray
@@ -129,5 +129,3 @@ object HabitPrefs {
 
     private fun generateId(): String = java.util.UUID.randomUUID().toString()
 }
-
-

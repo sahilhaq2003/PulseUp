@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.UserPrefs
 
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,7 +33,7 @@ class Login : AppCompatActivity() {
 
         // Auto-forward if already logged in
         if (UserPrefs.isLoggedIn(this)) {
-            startActivity(Intent(this, Home::class.java))
+            startActivity(Intent(this, MainFragmentActivity::class.java))
             finish()
             return
         }
@@ -48,7 +50,7 @@ class Login : AppCompatActivity() {
                 if (email == savedEmail && password == savedPassword) {
                     UserPrefs.setLoggedIn(this, true)
                     Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, Home::class.java)
+                    val intent = Intent(this, MainFragmentActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
@@ -62,11 +64,11 @@ class Login : AppCompatActivity() {
         }
 
         signupText.setOnClickListener {
-            val intent = Intent(this, Signup::class.java)
+            val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
         forgotPassword.setOnClickListener {
-            val intent = Intent(this, Forgetpassword::class.java)
+            val intent = Intent(this, ForgetPasswordActivity::class.java)
             startActivity(intent)
         }
     }

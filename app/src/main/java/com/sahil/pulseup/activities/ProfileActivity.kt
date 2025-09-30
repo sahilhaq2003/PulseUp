@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.HydrationPrefs
+import com.sahil.pulseup.data.UserPrefs
 
-class Profile : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private var photoUri: Uri? = null
 
@@ -96,7 +99,7 @@ class Profile : AppCompatActivity() {
         hydrationInterval.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setIntervalHours(this@Profile, progress + 1)
+                    HydrationPrefs.setIntervalHours(this@ProfileActivity, progress + 1)
                     updateHydrationTexts()
                 }
             }
@@ -107,7 +110,7 @@ class Profile : AppCompatActivity() {
         hydrationStartTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setStartHour(this@Profile, progress)
+                    HydrationPrefs.setStartHour(this@ProfileActivity, progress)
                     updateHydrationTexts()
                 }
             }
@@ -118,7 +121,7 @@ class Profile : AppCompatActivity() {
         hydrationEndTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setEndHour(this@Profile, progress)
+                    HydrationPrefs.setEndHour(this@ProfileActivity, progress)
                     updateHydrationTexts()
                 }
             }
@@ -140,7 +143,7 @@ class Profile : AppCompatActivity() {
 
         logoutBtn.setOnClickListener {
             UserPrefs.setLoggedIn(this, false)
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
@@ -170,6 +173,3 @@ class Profile : AppCompatActivity() {
         findViewById<TextView>(R.id.hydrationEndText)?.text = "End: ${String.format("%02d:00", endHour)}"
     }
 }
-
-
-

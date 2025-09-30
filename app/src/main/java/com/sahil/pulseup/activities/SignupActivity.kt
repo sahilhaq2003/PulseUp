@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.UserPrefs
 
-class Signup : AppCompatActivity() {
+class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,17 +41,15 @@ class Signup : AppCompatActivity() {
             } else {
                 UserPrefs.saveUser(this, name, email, password)
                 Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, Home::class.java)
+                val intent = Intent(this, MainFragmentActivity::class.java)
                 startActivity(intent)
                 finish()
             }
         }
 
         loginText.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
-
     }
 }

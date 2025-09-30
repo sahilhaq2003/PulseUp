@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.app.AlertDialog
 import android.content.Context
@@ -16,11 +16,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.MoodPrefs
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Calender : AppCompatActivity() {
+class CalendarActivity : AppCompatActivity() {
 
     private var daysGrid: GridLayout? = null
     private val moodHistory = mutableMapOf<Int, String>()
@@ -59,10 +61,10 @@ class Calender : AppCompatActivity() {
             // already on Mood, do nothing
         }
         findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(android.content.Intent(this, Profile::class.java))
+            startActivity(android.content.Intent(this, ProfileActivity::class.java))
         }
         findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            startActivity(android.content.Intent(this, Home::class.java))
+            startActivity(android.content.Intent(this, MainFragmentActivity::class.java))
         }
 
     renderCalendar()
@@ -180,7 +182,7 @@ class Calender : AppCompatActivity() {
                     try {
                         moodHistory[day] = moods[selectedIndex]
                         // Persist through a single API
-                        com.sahil.pulseup.MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
+                        MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
                         renderCalendar()
                         Toast.makeText(this, "Mood saved", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
@@ -198,7 +200,7 @@ class Calender : AppCompatActivity() {
                 try {
                     if (moodHistory.containsKey(day)) {
                         moodHistory.remove(day)
-                        com.sahil.pulseup.MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
+                        MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
                         renderCalendar()
                         Toast.makeText(this, "Mood cleared", Toast.LENGTH_SHORT).show()
                     }
@@ -210,9 +212,9 @@ class Calender : AppCompatActivity() {
 
     private fun saveMoods() {
         try {
-            com.sahil.pulseup.MoodPrefs.saveMoods(this, currentMonth, currentYear, moodHistory)
+            MoodPrefs.saveMoods(this, currentMonth, currentYear, moodHistory as kotlin.collections.Map<Int, String>)
             // Debug: check stored JSON and show count of saved entries
-            val raw = com.sahil.pulseup.MoodPrefs.getRawJson(this, currentMonth, currentYear)
+            val raw = MoodPrefs.getRawJson(this, currentMonth, currentYear)
             if (!raw.isNullOrEmpty()) {
                 try {
                     val obj = JSONObject(raw)
@@ -232,9 +234,9 @@ class Calender : AppCompatActivity() {
 
     private fun loadMoods() {
         try {
-            val loaded = com.sahil.pulseup.MoodPrefs.loadMoods(this, currentMonth, currentYear)
+            val loaded = MoodPrefs.loadMoods(this, currentMonth, currentYear)
             moodHistory.clear()
-            moodHistory.putAll(loaded)
+            moodHistory.putAll(loaded as kotlin.collections.Map<Int, String>)
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Unable to load saved moods", Toast.LENGTH_SHORT).show()
@@ -266,7 +268,7 @@ class Calender : AppCompatActivity() {
             set(Calendar.YEAR, currentYear)
         }.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
         
-        val moods = com.sahil.pulseup.MoodPrefs.loadMoods(this, currentMonth, currentYear)
+        val moods = MoodPrefs.loadMoods(this, currentMonth, currentYear)
         val moodCount = moods.size
         val moodEmojis = moods.values.joinToString(" ")
         

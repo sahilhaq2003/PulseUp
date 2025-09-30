@@ -1,13 +1,9 @@
 package com.sahil.pulseup.ui
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
-import com.sahil.pulseup.R
 
 class LineChartView @JvmOverloads constructor(
     context: Context,
@@ -15,69 +11,81 @@ class LineChartView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private val axisPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, android.R.color.darker_gray)
-        strokeWidth = 2f
-        style = Paint.Style.STROKE
-    }
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val path = Path()
+    private val values = FloatArray(7)
+    private val chartPadding = 40f
+    private val pointRadius = 8f
+    private val lineWidth = 4f
 
-    private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, android.R.color.holo_blue_light)
-        strokeWidth = 6f
-        style = Paint.Style.STROKE
-        strokeCap = Paint.Cap.ROUND
-        strokeJoin = Paint.Join.ROUND
+    init {
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = lineWidth
+        paint.color = Color.parseColor("#4CAF50")
+        paint.strokeCap = Paint.Cap.ROUND
+        paint.strokeJoin = Paint.Join.ROUND
     }
-
-    private val pointPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, android.R.color.holo_blue_light)
-        style = Paint.Style.FILL
-    }
-
-    private var values: FloatArray = floatArrayOf()
 
     fun setValues(newValues: FloatArray) {
-        values = newValues
+        System.arraycopy(newValues, 0, values, 0, minOf(newValues.size, values.size))
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        val paddingLeft = paddingLeft.toFloat()
-        val paddingTop = paddingTop.toFloat()
-        val paddingRight = paddingRight.toFloat()
-        val paddingBottom = paddingBottom.toFloat()
-
-        val width = width.toFloat() - paddingLeft - paddingRight
-        val height = height.toFloat() - paddingTop - paddingBottom
-
-        val chartLeft = paddingLeft
-        val chartTop = paddingTop
-        val chartRight = paddingLeft + width
-        val chartBottom = paddingTop + height
-
-        // Baseline grid line
-        canvas.drawLine(chartLeft, chartBottom, chartRight, chartBottom, axisPaint)
-
+        
         if (values.isEmpty()) return
 
-        val stepX = width / (values.size - 1).coerceAtLeast(1)
+        val width = width.toFloat()
+        val height = height.toFloat()
+        val chartWidth = width - 2 * chartPadding
+        val chartHeight = height - 2 * chartPadding
 
-        val path = Path()
-        values.forEachIndexed { index, v ->
-            val x = chartLeft + stepX * index
-            val y = chartTop + (1f - v.coerceIn(0f, 1f)) * height
-            if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        // Find min and max values
+        val minValue = values.minOrNull() ?: 0f
+        val maxValue = values.maxOrNull() ?: 1f
+        val valueRange = maxValue - minValue
+
+        if (valueRange == 0f) return
+
+        // Draw grid lines
+        paint.color = Color.parseColor("#E0E0E0")
+        paint.strokeWidth = 1f
+        for (i in 0..4) {
+            val y = chartPadding + (chartHeight / 4) * i
+            canvas.drawLine(chartPadding, y, width - chartPadding, y, paint)
         }
 
-        canvas.drawPath(path, linePaint)
+        // Draw line chart
+        paint.color = Color.parseColor("#4CAF50")
+        paint.strokeWidth = lineWidth
+        path.reset()
 
-        // Last point emphasis
-        val lastX = chartLeft + stepX * (values.size - 1)
-        val lastY = chartTop + (1f - values.last().coerceIn(0f, 1f)) * height
-        canvas.drawCircle(lastX, lastY, 8f, pointPaint)
+        for (i in values.indices) {
+            val x = chartPadding + (chartWidth / (values.size - 1)) * i
+            val normalizedValue = (values[i] - minValue) / valueRange
+            val y = height - chartPadding - (chartHeight * normalizedValue)
+
+            if (i == 0) {
+                path.moveTo(x, y)
+            } else {
+                path.lineTo(x, y)
+            }
+        }
+
+        canvas.drawPath(path, paint)
+
+        // Draw points
+        paint.style = Paint.Style.FILL
+        paint.color = Color.parseColor("#4CAF50")
+        for (i in values.indices) {
+            val x = chartPadding + (chartWidth / (values.size - 1)) * i
+            val normalizedValue = (values[i] - minValue) / valueRange
+            val y = height - chartPadding - (chartHeight * normalizedValue)
+            canvas.drawCircle(x, y, pointRadius, paint)
+        }
+
+        // Reset paint style
+        paint.style = Paint.Style.STROKE
     }
 }
-
-

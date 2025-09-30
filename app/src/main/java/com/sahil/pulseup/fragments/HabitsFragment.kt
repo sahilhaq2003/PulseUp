@@ -1,60 +1,52 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.fragments
 
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.sahil.pulseup.R
+import com.sahil.pulseup.activities.*
+import com.sahil.pulseup.data.HabitPrefs
 
-class HabitsActivity : AppCompatActivity() {
+class HabitsFragment : Fragment() {
     private lateinit var habitsContainer: LinearLayout
     
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_habits)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_habits, container, false)
+    }
+    
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         
-        // If no user is logged in, send to Login
-        if (!UserPrefs.isLoggedIn(this)) {
-            startActivity(Intent(this, Login::class.java))
-            finish()
-            return
-        }
-        
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.habits_main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        habitsContainer = findViewById(R.id.habitsContainer)
+        habitsContainer = view.findViewById(R.id.habitsContainer)
         
         // Add habit button
-        findViewById<ImageView>(R.id.addHabitBtn)?.setOnClickListener {
+        view.findViewById<ImageView>(R.id.addHabitBtn)?.setOnClickListener {
             showAddHabitDialog()
         }
         
         // Back button
-        findViewById<ImageView>(R.id.backBtn)?.setOnClickListener {
-            finish()
+        view.findViewById<ImageView>(R.id.backBtn)?.setOnClickListener {
+            requireActivity().finish()
         }
         
         // Bottom navigation
-        findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
-            startActivity(Intent(this, Calender::class.java))
+        view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
+            startActivity(Intent(requireContext(), CalendarActivity::class.java))
         }
-        findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
+        view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
             // Already on Habits - do nothing
         }
-        findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(this, Profile::class.java))
+        view.findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
         }
         
         loadHabits()
@@ -68,11 +60,11 @@ class HabitsActivity : AppCompatActivity() {
     
     private fun loadHabits() {
         habitsContainer.removeAllViews()
-        val habits = HabitPrefs.getHabits(this)
+        val habits = HabitPrefs.getHabits(requireContext())
         
         if (habits.isEmpty()) {
             // Show empty state
-            val emptyView = TextView(this).apply {
+            val emptyView = TextView(requireContext()).apply {
                 text = "No habits yet. Tap + to add your first habit!"
                 textSize = 16f
                 setTextColor(resources.getColor(android.R.color.darker_gray, null))
@@ -90,7 +82,7 @@ class HabitsActivity : AppCompatActivity() {
     }
     
     private fun createHabitView(habit: HabitPrefs.Habit): View {
-        val inflater = LayoutInflater.from(this)
+        val inflater = LayoutInflater.from(requireContext())
         val habitView = inflater.inflate(R.layout.habit_item, habitsContainer, false)
         
         val checkbox = habitView.findViewById<CheckBox>(R.id.habitCheckbox)
@@ -106,11 +98,11 @@ class HabitsActivity : AppCompatActivity() {
         // Checkbox click - toggle completion
         checkbox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                HabitPrefs.incrementProgress(this, habit.id)
+                HabitPrefs.incrementProgress(requireContext(), habit.id)
             } else {
-                val current = HabitPrefs.getProgress(this, habit.id)
+                val current = HabitPrefs.getProgress(requireContext(), habit.id)
                 if (current > 0) {
-                    HabitPrefs.setProgress(this, habit.id, current - 1)
+                    HabitPrefs.setProgress(requireContext(), habit.id, current - 1)
                 }
             }
             updateHabitProgress(habit, progressText, progressBar, checkbox)
@@ -123,11 +115,11 @@ class HabitsActivity : AppCompatActivity() {
         
         // Delete button
         deleteBtn.setOnClickListener {
-            AlertDialog.Builder(this)
+            AlertDialog.Builder(requireContext())
                 .setTitle("Delete Habit")
                 .setMessage("Are you sure you want to delete '${habit.title}'?")
                 .setPositiveButton("Delete") { _, _ ->
-                    HabitPrefs.deleteHabit(this, habit.id)
+                    HabitPrefs.deleteHabit(requireContext(), habit.id)
                     loadHabits()
                 }
                 .setNegativeButton("Cancel", null)
@@ -138,8 +130,8 @@ class HabitsActivity : AppCompatActivity() {
     }
     
     private fun updateHabitProgress(habit: HabitPrefs.Habit, progressText: TextView, progressBar: ProgressBar, checkbox: CheckBox) {
-        val progress = HabitPrefs.getProgress(this, habit.id)
-        val percentage = HabitPrefs.getCompletionPercentage(this, habit)
+        val progress = HabitPrefs.getProgress(requireContext(), habit.id)
+        val percentage = HabitPrefs.getCompletionPercentage(requireContext(), habit)
         
         progressText.text = "$progress/${habit.targetPerDay}"
         progressBar.progress = percentage
@@ -147,11 +139,11 @@ class HabitsActivity : AppCompatActivity() {
     }
     
     private fun showAddHabitDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_habit, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_habit, null)
         val titleInput = dialogView.findViewById<EditText>(R.id.habitTitleInput)
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(requireContext())
             .setTitle("Add New Habit")
             .setView(dialogView)
             .setPositiveButton("Add") { _, _ ->
@@ -159,10 +151,10 @@ class HabitsActivity : AppCompatActivity() {
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
                 if (title.isNotEmpty()) {
-                    HabitPrefs.addHabit(this, title, target)
+                    HabitPrefs.addHabit(requireContext(), title, target)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Please enter a habit title", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -170,14 +162,14 @@ class HabitsActivity : AppCompatActivity() {
     }
     
     private fun showEditHabitDialog(habit: HabitPrefs.Habit) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_habit, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_habit, null)
         val titleInput = dialogView.findViewById<EditText>(R.id.habitTitleInput)
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         titleInput.setText(habit.title)
         targetInput.setText(habit.targetPerDay.toString())
         
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(requireContext())
             .setTitle("Edit Habit")
             .setView(dialogView)
             .setPositiveButton("Save") { _, _ ->
@@ -186,10 +178,10 @@ class HabitsActivity : AppCompatActivity() {
                 
                 if (title.isNotEmpty()) {
                     val updatedHabit = habit.copy(title = title, targetPerDay = target)
-                    HabitPrefs.updateHabit(this, updatedHabit)
+                    HabitPrefs.updateHabit(requireContext(), updatedHabit)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Please enter a habit title", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
