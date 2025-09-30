@@ -71,4 +71,7 @@
     <string name="mood_happy">😊</string>
     <string name="mood_neutral">😐</string>
     <string name="mood_angry">😡</string>
+    
+    <!-- Navigation -->
+    <string name="previous">Previous</string>
 </resources>

@@ -34,10 +34,10 @@
                     android:id="@+id/backBtn"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:background="@drawable/button_primary_background"
+                    android:background="@drawable/circle_bg"
+                    android:contentDescription="@string/back"
                     android:padding="12dp"
-                    android:src="@drawable/ic_arrow_back"
-                    android:contentDescription="@string/back" />
+                    android:src="@drawable/ic_arrow_back" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -64,40 +64,53 @@
             </LinearLayout>
 
             <!-- Month Selector -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:gravity="center">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorSurface">
 
-                <ImageView
-                    android:id="@+id/prevMonth"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@android:drawable/ic_media_previous"
-                    app:tint="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/monthTitle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:text="July 2025"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:padding="20dp"
+                    android:gravity="center_vertical">
 
-                <ImageView
-                    android:id="@+id/nextMonth"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@android:drawable/ic_media_next"
-                    app:tint="@android:color/darker_gray" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/prevMonth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_outline_background"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_back"
+                        android:contentDescription="@string/previous" />
+
+                    <TextView
+                        android:id="@+id/monthTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="July 2025"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center" />
+
+                    <ImageView
+                        android:id="@+id/nextMonth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/button_outline_background"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_forward"
+                        android:contentDescription="@string/next" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Calendar -->
             <androidx.cardview.widget.CardView
