@@ -47,16 +47,6 @@ class HabitsActivity : AppCompatActivity() {
             finish()
         }
         
-        // Bottom navigation
-        findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
-            startActivity(Intent(this, CalendarActivity::class.java))
-        }
-        findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            // Already on Habits - do nothing
-        }
-        findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
         
         loadHabits()
     }
@@ -102,7 +92,29 @@ class HabitsActivity : AppCompatActivity() {
         val deleteBtn = habitView.findViewById<ImageView>(R.id.habitDeleteBtn)
         
         titleText.text = habit.title
+        
+        // Update progress percentage text if it exists
+        val progressPercentText = habitView.findViewById<TextView>(R.id.habitProgressPercent)
+        val streakText = habitView.findViewById<TextView>(R.id.habitStreak)
+        
         updateHabitProgress(habit, progressText, progressBar, checkbox)
+        
+        // Update additional UI elements if they exist
+        val progress = HabitPrefs.getProgress(this, habit.id)
+        val percentage = if (habit.targetPerDay > 0) {
+            ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+        } else {
+            0
+        }
+        
+        progressPercentText?.text = "$percentage%"
+        
+        if (progress >= habit.targetPerDay) {
+            streakText?.visibility = View.VISIBLE
+            streakText?.text = "🔥 ${progress} day streak"
+        } else {
+            streakText?.visibility = View.GONE
+        }
         
         // Checkbox click - toggle completion
         checkbox.setOnCheckedChangeListener { _, isChecked ->
@@ -115,6 +127,23 @@ class HabitsActivity : AppCompatActivity() {
                 }
             }
             updateHabitProgress(habit, progressText, progressBar, checkbox)
+            
+            // Update additional UI elements
+            val progress = HabitPrefs.getProgress(this, habit.id)
+            val percentage = if (habit.targetPerDay > 0) {
+                ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+            } else {
+                0
+            }
+            
+            progressPercentText?.text = "$percentage%"
+            
+            if (progress >= habit.targetPerDay) {
+                streakText?.visibility = View.VISIBLE
+                streakText?.text = "🔥 ${progress} day streak"
+            } else {
+                streakText?.visibility = View.GONE
+            }
         }
         
         // Edit button
@@ -153,7 +182,6 @@ class HabitsActivity : AppCompatActivity() {
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.add_new_habit))
             .setView(dialogView)
             .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = titleInput.text.toString().trim()
@@ -179,7 +207,6 @@ class HabitsActivity : AppCompatActivity() {
         targetInput.setText(habit.targetPerDay.toString())
         
         AlertDialog.Builder(this)
-            .setTitle(getString(R.string.edit_habit))
             .setView(dialogView)
             .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val title = titleInput.text.toString().trim()

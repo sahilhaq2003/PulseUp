@@ -32,12 +32,12 @@
 
                 <ImageView
                     android:id="@+id/backBtn"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp"
-                    android:src="@android:drawable/ic_media_previous"
-                    app:tint="@android:color/black" />
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/button_primary_background"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:contentDescription="@string/back" />
 
                 <TextView
                     android:layout_width="wrap_content"

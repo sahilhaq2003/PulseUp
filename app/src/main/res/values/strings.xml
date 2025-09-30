@@ -30,6 +30,10 @@
     <string name="delete_habit_confirm">Are you sure you want to delete \'%s\'?</string>
     <string name="please_enter_habit_title">Please enter a habit title</string>
     <string name="see_more_habits">See More (%d more)</string>
+    <string name="all_habits">All Habits</string>
+    <string name="habit_title">Habit Title</string>
+    <string name="target_per_day">Target per day</string>
+    <string name="habit_creation_tip">💡 Tip: Start with small, achievable goals. You can always increase your target later!</string>
     
     <!-- Mood/Calendar strings -->
     <string name="mood_journal">Mood Journal</string>

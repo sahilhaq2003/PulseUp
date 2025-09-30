@@ -1,41 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:background="@color/colorSurface">
 
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_habit"
+            app:tint="@color/colorPrimary"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_new_habit"
+            android:textSize="20sp"
+            android:textColor="@color/colorTextPrimary"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+    </LinearLayout>
+
+    <!-- Habit Title Input -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Habit Title"
+        android:text="@string/habit_title"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:layout_marginBottom="8dp" />
 
     <EditText
         android:id="@+id/habitTitleInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="e.g., Drink water, Exercise, Meditate"
-        android:inputType="text"
+        android:hint="@string/habit_title"
+        android:inputType="textCapSentences"
         android:maxLines="1"
+        android:textColor="@color/colorTextPrimary"
+        android:textColorHint="@color/colorTextSecondary"
+        android:background="@drawable/edittext_bg"
+        android:padding="16dp"
         android:layout_marginBottom="16dp" />
 
+    <!-- Target per day Input -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Target per day"
+        android:text="@string/target_per_day"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorTextPrimary"
         android:layout_marginBottom="8dp" />
 
     <EditText
         android:id="@+id/habitTargetInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="1"
+        android:hint="@string/target_per_day"
         android:inputType="number"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:text="1"
+        android:textColor="@color/colorTextPrimary"
+        android:textColorHint="@color/colorTextSecondary"
+        android:background="@drawable/edittext_bg"
+        android:padding="16dp" />
+
+    <!-- Helper Text -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_creation_tip"
+        android:textSize="12sp"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="2dp" />
 
 </LinearLayout>
