@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.HydrationPrefs
+import com.sahil.pulseup.data.UserPrefs
 
-class Profile : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private var photoUri: Uri? = null
 
@@ -37,14 +41,14 @@ class Profile : AppCompatActivity() {
             insets
         }
 
-        val backBtn = findViewById<ImageButton>(R.id.backBtn)
+        val backBtn = findViewById<ImageView>(R.id.backBtn)
         backBtn.setOnClickListener { finish() }
 
         val profilePhoto = findViewById<ImageView>(R.id.profilePhoto)
         val changePhoto = findViewById<Button>(R.id.changePhotoBtn)
-        val nameInput = findViewById<EditText>(R.id.nameInput)
-        val emailInput = findViewById<EditText>(R.id.emailInput)
-        val phoneInput = findViewById<EditText>(R.id.phoneInput)
+        val nameInput = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.nameInput)
+        val emailInput = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.emailInput)
+        val phoneInput = findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.phoneInput)
         val saveBtn = findViewById<Button>(R.id.saveBtn)
         val logoutBtn = findViewById<Button>(R.id.logoutBtn)
         
@@ -96,7 +100,7 @@ class Profile : AppCompatActivity() {
         hydrationInterval.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setIntervalHours(this@Profile, progress + 1)
+                    HydrationPrefs.setIntervalHours(this@ProfileActivity, progress + 1)
                     updateHydrationTexts()
                 }
             }
@@ -107,7 +111,7 @@ class Profile : AppCompatActivity() {
         hydrationStartTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setStartHour(this@Profile, progress)
+                    HydrationPrefs.setStartHour(this@ProfileActivity, progress)
                     updateHydrationTexts()
                 }
             }
@@ -118,7 +122,7 @@ class Profile : AppCompatActivity() {
         hydrationEndTime.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    HydrationPrefs.setEndHour(this@Profile, progress)
+                    HydrationPrefs.setEndHour(this@ProfileActivity, progress)
                     updateHydrationTexts()
                 }
             }
@@ -140,7 +144,7 @@ class Profile : AppCompatActivity() {
 
         logoutBtn.setOnClickListener {
             UserPrefs.setLoggedIn(this, false)
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
@@ -165,11 +169,8 @@ class Profile : AppCompatActivity() {
         val startHour = HydrationPrefs.getStartHour(this)
         val endHour = HydrationPrefs.getEndHour(this)
         
-        findViewById<TextView>(R.id.hydrationIntervalText)?.text = "Every $intervalHours hour(s)"
-        findViewById<TextView>(R.id.hydrationStartText)?.text = "Start: ${String.format("%02d:00", startHour)}"
-        findViewById<TextView>(R.id.hydrationEndText)?.text = "End: ${String.format("%02d:00", endHour)}"
+        findViewById<TextView>(R.id.hydrationIntervalText)?.text = "Every $intervalHours hours"
+        findViewById<TextView>(R.id.hydrationStartText)?.text = String.format("%02d:00", startHour)
+        findViewById<TextView>(R.id.hydrationEndText)?.text = String.format("%02d:00", endHour)
     }
 }
-
-
-

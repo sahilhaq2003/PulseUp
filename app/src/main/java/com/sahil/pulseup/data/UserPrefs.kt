@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.data
 
 import android.content.Context
 
@@ -70,6 +70,3 @@ object UserPrefs {
         prefs.edit().clear().apply()
     }
 }
-
-
-

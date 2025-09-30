@@ -1,4 +1,4 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.sahil.pulseup.R
+import com.sahil.pulseup.data.UserPrefs
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,13 +24,13 @@ class MainActivity : AppCompatActivity() {
 
         val nextButton = findViewById<Button>(R.id.nextButton)
         nextButton.setOnClickListener {
-            val intent = Intent(this, Onboarding1::class.java)
+            val intent = Intent(this, Onboarding1Activity::class.java)
             startActivity(intent)
         }
 
         // If user already completed onboarding / is logged in, skip onboarding flow
         if (UserPrefs.isLoggedIn(this)) {
-            startActivity(Intent(this, Home::class.java))
+            startActivity(Intent(this, MainFragmentActivity::class.java))
             finish()
             return
         }

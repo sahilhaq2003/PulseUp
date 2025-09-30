@@ -1,8 +1,12 @@
-package com.sahil.pulseup
+package com.sahil.pulseup.data
 
 import android.content.Context
 import androidx.work.Constraints
-import androidx.work.*
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -44,7 +48,7 @@ object HydrationPrefs {
     fun setIntervalHours(context: Context, hours: Int) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putInt(KEY_INTERVAL_HOURS, hours.coerceAtLeast(1))
+            .putInt(KEY_INTERVAL_HOURS, Math.max(hours, 1))
             .apply()
         if (isEnabled(context)) scheduleReminders(context)
     }
@@ -57,7 +61,7 @@ object HydrationPrefs {
     fun setStartHour(context: Context, hour: Int) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putInt(KEY_START_HOUR, hour.coerceIn(0, 23))
+            .putInt(KEY_START_HOUR, Math.max(0, Math.min(23, hour)))
             .apply()
         if (isEnabled(context)) scheduleReminders(context)
     }
@@ -70,7 +74,7 @@ object HydrationPrefs {
     fun setEndHour(context: Context, hour: Int) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putInt(KEY_END_HOUR, hour.coerceIn(0, 23))
+            .putInt(KEY_END_HOUR, Math.max(0, Math.min(23, hour)))
             .apply()
         if (isEnabled(context)) scheduleReminders(context)
     }
@@ -78,19 +82,18 @@ object HydrationPrefs {
     private fun scheduleReminders(context: Context) {
         val workManager = WorkManager.getInstance(context)
         
-        // Cancel existing work
         workManager.cancelUniqueWork(WORK_NAME)
         
         val intervalHours = getIntervalHours(context)
         val startHour = getStartHour(context)
         val endHour = getEndHour(context)
         
-        // Create periodic work request
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
             .build()
             
-        val hydrationWork = PeriodicWorkRequestBuilder<HydrationReminderWorker>(
+        val hydrationWork = PeriodicWorkRequest.Builder(
+            com.sahil.pulseup.workers.HydrationReminderWorker::class.java,
             intervalHours.toLong(), TimeUnit.HOURS
         )
             .setConstraints(constraints)
@@ -104,7 +107,6 @@ object HydrationPrefs {
             hydrationWork
         )
 
-        // Store last scheduled time
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
             .putLong(KEY_LAST_SCHEDULED_AT, System.currentTimeMillis())
@@ -116,20 +118,18 @@ object HydrationPrefs {
     }
     
     private fun calculateInitialDelay(startHour: Int): Long {
-        val currentHour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)
-        val delayHours = if (currentHour < startHour) {
-            startHour - currentHour
-        } else {
-            24 - currentHour + startHour
-        }
-        return delayHours * 60L // Convert to minutes
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        val delayHours = if (currentHour < startHour) 
+            (startHour - currentHour) 
+        else 
+            (24 - currentHour + startHour)
+        return delayHours * 60L
     }
 
     fun getNextReminderText(context: Context): String {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         if (!prefs.getBoolean(KEY_ENABLED, false)) return "Reminders off"
 
-        // If an explicit next time was saved, show that
         val explicitHour = prefs.getInt(KEY_NEXT_HOUR, -1)
         val explicitMinute = prefs.getInt(KEY_NEXT_MINUTE, -1)
         if (explicitHour in 0..23 && explicitMinute in 0..59) {
@@ -145,49 +145,50 @@ object HydrationPrefs {
         val startHour = getStartHour(context)
         val endHour = getEndHour(context)
 
-        val now = java.util.Calendar.getInstance()
-        var next = java.util.Calendar.getInstance()
-        next.add(java.util.Calendar.HOUR_OF_DAY, interval)
+        val now = Calendar.getInstance()
+        var next = Calendar.getInstance()
+        next.add(Calendar.HOUR_OF_DAY, interval)
 
-        // If current time is before start hour, use today start
-        if (now.get(java.util.Calendar.HOUR_OF_DAY) < startHour) {
-            next = java.util.Calendar.getInstance().apply {
-                set(java.util.Calendar.HOUR_OF_DAY, startHour)
-                set(java.util.Calendar.MINUTE, 0)
-            }
+        if (now.get(Calendar.HOUR_OF_DAY) < startHour) {
+            next = Calendar.getInstance()
+            next.set(Calendar.HOUR_OF_DAY, startHour)
+            next.set(Calendar.MINUTE, 0)
         }
 
-        // If next is after end hour today, set to next day start
-        if (next.get(java.util.Calendar.HOUR_OF_DAY) > endHour) {
-            next = java.util.Calendar.getInstance().apply {
-                add(java.util.Calendar.DAY_OF_YEAR, 1)
-                set(java.util.Calendar.HOUR_OF_DAY, startHour)
-                set(java.util.Calendar.MINUTE, 0)
-            }
+        if (next.get(Calendar.HOUR_OF_DAY) > endHour) {
+            next = Calendar.getInstance()
+            next.add(Calendar.DAY_OF_YEAR, 1)
+            next.set(Calendar.HOUR_OF_DAY, startHour)
+            next.set(Calendar.MINUTE, 0)
         }
 
-        val hour = next.get(java.util.Calendar.HOUR_OF_DAY)
-        val minute = next.get(java.util.Calendar.MINUTE)
+        val hour = next.get(Calendar.HOUR_OF_DAY)
+        val minute = next.get(Calendar.MINUTE)
         val ampm = if (hour >= 12) "PM" else "AM"
         val displayHour = ((hour + 11) % 12) + 1
         val displayMinute = String.format(Locale.getDefault(), "%02d", minute)
         return "Next reminder: $displayHour:$displayMinute $ampm"
     }
 
-    /**
-     * Save a specific next reminder time (hour, minute) and reschedule reminders.
-     */
     fun setNextReminderTime(context: Context, hour: Int, minute: Int) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putInt(KEY_NEXT_HOUR, hour.coerceIn(0, 23))
-            .putInt(KEY_NEXT_MINUTE, minute.coerceIn(0, 59))
+            .putInt(KEY_NEXT_HOUR, Math.max(0, Math.min(23, hour)))
+            .putInt(KEY_NEXT_MINUTE, Math.max(0, Math.min(59, minute)))
             .apply()
 
-        // If reminders are enabled, reschedule to pick up the explicit next time
         if (isEnabled(context)) {
-            // scheduleReminders is private but callable from within the object
             scheduleReminders(context)
         }
+    }
+    
+    fun getNextReminderHour(context: Context): Int {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_NEXT_HOUR, -1)
+    }
+    
+    fun getNextReminderMinute(context: Context): Int {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_NEXT_MINUTE, -1)
     }
 }

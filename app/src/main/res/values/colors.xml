@@ -4,7 +4,14 @@
     <color name="colorSecondary">#555555</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorInactiveDot">#CCCCCC</color>
-
-
-
+    
+    <!-- Professional UI Colors -->
+    <color name="colorBackground">#F8F9FA</color>
+    <color name="colorTextPrimary">#212529</color>
+    <color name="colorTextSecondary">#6C757D</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorPrimaryLight">#E3F2FD</color>
+    <color name="colorSuccess">#28A745</color>
+    <color name="colorWarning">#FFC107</color>
+    <color name="colorError">#DC3545</color>
 </resources>
