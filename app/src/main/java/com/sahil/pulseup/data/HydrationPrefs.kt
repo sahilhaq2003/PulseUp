@@ -181,4 +181,14 @@ object HydrationPrefs {
             scheduleReminders(context)
         }
     }
+    
+    fun getNextReminderHour(context: Context): Int {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_NEXT_HOUR, -1)
+    }
+    
+    fun getNextReminderMinute(context: Context): Int {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getInt(KEY_NEXT_MINUTE, -1)
+    }
 }

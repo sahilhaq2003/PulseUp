@@ -118,9 +118,94 @@ class HomeFragment : Fragment() {
 
     private fun updateHydrationCard() {
         try {
-            val text = view?.findViewById<TextView>(R.id.hydrationNextText)
-            text?.text = HydrationPrefs.getNextReminderText(requireContext())
+            val nextText = view?.findViewById<TextView>(R.id.hydrationNextText)
+            val statusText = view?.findViewById<TextView>(R.id.hydrationStatus)
+            val progressBar = view?.findViewById<ProgressBar>(R.id.hydrationProgress)
+            val progressText = view?.findViewById<TextView>(R.id.hydrationProgressText)
+            
+            // Update status and next reminder text
+            val isEnabled = HydrationPrefs.isEnabled(requireContext())
+            if (isEnabled) {
+                statusText?.text = "Active"
+                statusText?.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
+                statusText?.background = resources.getDrawable(R.drawable.status_badge_success, null)
+                
+                // Show the actual next reminder time
+                val nextReminderTime = getNextReminderTime()
+                nextText?.text = "Next reminder: $nextReminderTime"
+            } else {
+                statusText?.text = "Inactive"
+                statusText?.setTextColor(resources.getColor(android.R.color.darker_gray, null))
+                statusText?.background = resources.getDrawable(R.drawable.status_badge_success, null)
+                nextText?.text = "No reminders set"
+            }
+            
+            // Update progress (mock data for now)
+            val progress = 75 // This could be calculated based on actual hydration data
+            progressBar?.progress = progress
+            progressText?.text = "3 of 4 reminders today"
+            
         } catch (_: Exception) { }
+    }
+    
+    private fun getNextReminderTime(): String {
+        return try {
+            // First, try to get the explicitly set next reminder time
+            val nextHour = HydrationPrefs.getNextReminderHour(requireContext())
+            val nextMinute = HydrationPrefs.getNextReminderMinute(requireContext())
+            
+            if (nextHour != -1 && nextMinute != -1) {
+                // Use the explicitly set time
+                val ampm = if (nextHour >= 12) "PM" else "AM"
+                val displayHour = if (nextHour > 12) nextHour - 12 else if (nextHour == 0) 12 else nextHour
+                val displayMinute = String.format("%02d", nextMinute)
+                return "$displayHour:$displayMinute $ampm"
+            }
+            
+            // Fallback to calculated time based on settings
+            val startHour = HydrationPrefs.getStartHour(requireContext())
+            val intervalHours = HydrationPrefs.getIntervalHours(requireContext())
+            val endHour = HydrationPrefs.getEndHour(requireContext())
+            
+            val calendar = java.util.Calendar.getInstance()
+            val currentHour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+            val currentMinute = calendar.get(java.util.Calendar.MINUTE)
+            
+            // Calculate next reminder time
+            var calculatedHour = startHour
+            var calculatedMinute = 0
+            
+            // If current time is before start time, next reminder is at start time
+            if (currentHour < startHour) {
+                calculatedHour = startHour
+            } else {
+                // Find next reminder time based on interval
+                var reminderHour = startHour
+                while (reminderHour <= endHour) {
+                    if (reminderHour > currentHour || (reminderHour == currentHour && currentMinute < calculatedMinute)) {
+                        calculatedHour = reminderHour
+                        break
+                    }
+                    reminderHour += intervalHours
+                }
+                
+                // If no reminder found for today, set for tomorrow at start time
+                if (calculatedHour > endHour) {
+                    calculatedHour = startHour
+                    calendar.add(java.util.Calendar.DAY_OF_YEAR, 1)
+                }
+            }
+            
+            // Format time
+            val ampm = if (calculatedHour >= 12) "PM" else "AM"
+            val displayHour = if (calculatedHour > 12) calculatedHour - 12 else if (calculatedHour == 0) 12 else calculatedHour
+            val displayMinute = String.format("%02d", calculatedMinute)
+            
+            "$displayHour:$displayMinute $ampm"
+            
+        } catch (e: Exception) {
+            "10:00 AM" // Default fallback
+        }
     }
     
     private fun loadHabits() {
