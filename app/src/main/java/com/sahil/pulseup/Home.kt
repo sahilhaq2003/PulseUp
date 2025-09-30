@@ -81,7 +81,7 @@ class Home : AppCompatActivity() {
             val month = today.get(Calendar.MONTH)
             val year = today.get(Calendar.YEAR)
             val day = today.get(Calendar.DAY_OF_MONTH)
-            val moods = MoodPrefs.loadMoods(this, month, year)
+            val moods = com.sahil.pulseup.MoodPrefs.loadMoods(this, month, year)
             val preview = findViewById<TextView>(R.id.moodPreviewEmoji)
             preview?.text = moods[day] ?: "🙂"
         } catch (e: Exception) {
@@ -98,10 +98,8 @@ class Home : AppCompatActivity() {
         try {
             // Map emojis to scores 0..1 for simple charting
             fun emojiToScore(emoji: String?): Float = when (emoji) {
-                "😍" -> 1.0f
                 "😊" -> 0.8f
                 "😐" -> 0.5f
-                "😢" -> 0.2f
                 "😡" -> 0.1f
                 else -> 0.6f
             }
@@ -113,16 +111,22 @@ class Home : AppCompatActivity() {
                 val month = c.get(Calendar.MONTH)
                 val year = c.get(Calendar.YEAR)
                 val day = c.get(Calendar.DAY_OF_MONTH)
-                values[6 - i] = emojiToScore(MoodPrefs.getMood(this, year, month, day))
+                val mood = com.sahil.pulseup.MoodPrefs.getMood(this, year, month, day)
+                val score = emojiToScore(mood)
+                values[6 - i] = score
+                android.util.Log.d("ChartUpdate", "Day $day: mood=$mood, score=$score")
             }
+            android.util.Log.d("ChartUpdate", "Setting chart values: ${values.contentToString()}")
             lineChart?.setValues(values)
-        } catch (_: Exception) { }
+        } catch (e: Exception) { 
+            android.util.Log.e("ChartUpdate", "Error updating chart", e)
+        }
     }
 
     private fun updateHydrationCard() {
         try {
             val text = findViewById<TextView>(R.id.hydrationNextText)
-            text?.text = HydrationPrefs.getNextReminderText(this)
+            text?.text = com.sahil.pulseup.HydrationPrefs.getNextReminderText(this)
         } catch (_: Exception) { }
     }
     

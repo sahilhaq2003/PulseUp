@@ -166,7 +166,7 @@ class Calender : AppCompatActivity() {
     }
 
     private fun showMoodPicker(day: Int) {
-        val moods = arrayOf("😊", "😐", "😢", "😡", "😍")
+        val moods = arrayOf("😊", "😐", "😡")
 
         // Use singleChoice to make user pick and confirm
         var selectedIndex = -1
@@ -180,7 +180,7 @@ class Calender : AppCompatActivity() {
                     try {
                         moodHistory[day] = moods[selectedIndex]
                         // Persist through a single API
-                        MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
+                        com.sahil.pulseup.MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
                         renderCalendar()
                         Toast.makeText(this, "Mood saved", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
@@ -198,7 +198,7 @@ class Calender : AppCompatActivity() {
                 try {
                     if (moodHistory.containsKey(day)) {
                         moodHistory.remove(day)
-                        MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
+                        com.sahil.pulseup.MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
                         renderCalendar()
                         Toast.makeText(this, "Mood cleared", Toast.LENGTH_SHORT).show()
                     }
@@ -210,9 +210,9 @@ class Calender : AppCompatActivity() {
 
     private fun saveMoods() {
         try {
-            MoodPrefs.saveMoods(this, currentMonth, currentYear, moodHistory)
+            com.sahil.pulseup.MoodPrefs.saveMoods(this, currentMonth, currentYear, moodHistory)
             // Debug: check stored JSON and show count of saved entries
-            val raw = MoodPrefs.getRawJson(this, currentMonth, currentYear)
+            val raw = com.sahil.pulseup.MoodPrefs.getRawJson(this, currentMonth, currentYear)
             if (!raw.isNullOrEmpty()) {
                 try {
                     val obj = JSONObject(raw)
@@ -232,7 +232,7 @@ class Calender : AppCompatActivity() {
 
     private fun loadMoods() {
         try {
-            val loaded = MoodPrefs.loadMoods(this, currentMonth, currentYear)
+            val loaded = com.sahil.pulseup.MoodPrefs.loadMoods(this, currentMonth, currentYear)
             moodHistory.clear()
             moodHistory.putAll(loaded)
         } catch (e: Exception) {
@@ -266,7 +266,7 @@ class Calender : AppCompatActivity() {
             set(Calendar.YEAR, currentYear)
         }.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
         
-        val moods = MoodPrefs.loadMoods(this, currentMonth, currentYear)
+        val moods = com.sahil.pulseup.MoodPrefs.loadMoods(this, currentMonth, currentYear)
         val moodCount = moods.size
         val moodEmojis = moods.values.joinToString(" ")
         
