@@ -98,6 +98,8 @@ class HomeFragment : Fragment() {
             }
 
             val values = FloatArray(7)
+            val moodEmojis = arrayOfNulls<String>(7)
+            
             for (i in 6 downTo 0) {
                 val c = Calendar.getInstance()
                 c.add(Calendar.DAY_OF_YEAR, -i)
@@ -107,12 +109,58 @@ class HomeFragment : Fragment() {
                 val mood = MoodPrefs.getMood(requireContext(), year, month, day)
                 val score = emojiToScore(mood)
                 values[6 - i] = score
+                moodEmojis[6 - i] = mood
                 android.util.Log.d("ChartUpdate", "Day $day: mood=$mood, score=$score")
             }
+            
             android.util.Log.d("ChartUpdate", "Setting chart values: ${values.contentToString()}")
             lineChart?.setValues(values)
+            
+            // Update mood trend stats
+            updateMoodStats(moodEmojis, values)
+            
         } catch (e: Exception) { 
             android.util.Log.e("ChartUpdate", "Error updating chart", e)
+        }
+    }
+    
+    private fun updateMoodStats(moodEmojis: Array<String?>, values: FloatArray) {
+        try {
+            val avgMoodText = view?.findViewById<TextView>(R.id.avgMoodText)
+            val trendText = view?.findViewById<TextView>(R.id.trendText)
+            val streakText = view?.findViewById<TextView>(R.id.streakText)
+            
+            // Update average mood
+            val validMoods = moodEmojis.filterNotNull()
+            if (validMoods.isNotEmpty()) {
+                val happyCount = validMoods.count { it == "😊" }
+                val neutralCount = validMoods.count { it == "😐" }
+                val sadCount = validMoods.count { it == "😡" }
+                
+                val avgMood = when {
+                    happyCount > neutralCount && happyCount > sadCount -> "😊"
+                    sadCount > neutralCount && sadCount > happyCount -> "😡"
+                    else -> "😐"
+                }
+                avgMoodText?.text = avgMood
+            } else {
+                avgMoodText?.text = "😐"
+            }
+            
+            // Update trend
+            if (values.size >= 2) {
+                val recent = values.takeLast(3).average()
+                val older = values.take(3).average()
+                trendText?.text = if (recent > older) "📈" else if (recent < older) "📉" else "➡️"
+            } else {
+                trendText?.text = "➡️"
+            }
+            
+            // Update streak (mock data for now)
+            streakText?.text = "3"
+            
+        } catch (e: Exception) {
+            android.util.Log.e("MoodStats", "Error updating mood stats", e)
         }
     }
 

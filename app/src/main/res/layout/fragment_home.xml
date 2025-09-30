@@ -306,122 +306,171 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="224dp"
-                    android:padding="16dp">
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/moodTrendTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mood Trend"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                    <!-- Header Section -->
+                    <ImageView
+                        android:id="@+id/moodTrendIcon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_mood_trend"
+                        android:background="@drawable/circle_background_primary"
+                        android:padding="12dp"
+                        android:contentDescription="Mood trend"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/emojiScale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@+id/weekdayScale"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/moodTrendTitle">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="☺️" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="😐" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="😡" />
-
-
-                    </LinearLayout>
-
-                    <com.sahil.pulseup.ui.LineChartView
-                        android:id="@+id/lineChart"
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="8dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/emojiScale"
-                        app:layout_constraintTop_toBottomOf="@id/moodTrendTitle" />
-
-                    <LinearLayout
-                        android:id="@+id/weekdayScale"
+                    <TextView
+                        android:id="@+id/moodTrendTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
+                        android:text="Mood Trend"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintStart_toEndOf="@id/moodTrendIcon"
+                        app:layout_constraintTop_toTopOf="@id/moodTrendIcon"
+                        app:layout_constraintEnd_toStartOf="@id/moodTrendSubtitle" />
+
+                    <TextView
+                        android:id="@+id/moodTrendSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last 7 days"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="14sp"
+                        android:background="@drawable/rounded_background_light"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/moodTrendIcon" />
+
+                    <!-- Chart Container -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/chartContainer"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="@color/colorWhite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/moodTrendIcon">
+
+                        <com.sahil.pulseup.ui.LineChartView
+                            android:id="@+id/lineChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Stats Section -->
+                    <LinearLayout
+                        android:id="@+id/moodStatsContainer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="@id/lineChart"
-                        app:layout_constraintStart_toStartOf="@id/lineChart"
-                        app:layout_constraintTop_toBottomOf="@id/lineChart">
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rounded_background_light"
+                        android:padding="12dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/chartContainer">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="M" />
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
+                            <TextView
+                                android:id="@+id/avgMoodText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="😊"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Average"
+                                android:textColor="@color/colorTextSecondary"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorTextSecondary"
+                            android:alpha="0.3" />
+
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T" />
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
+                            <TextView
+                                android:id="@+id/trendText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📈"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Trend"
+                                android:textColor="@color/colorTextSecondary"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorTextSecondary"
+                            android:alpha="0.3" />
+
+                        <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="W" />
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="T" />
+                            <TextView
+                                android:id="@+id/streakText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="F" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Day Streak"
+                                android:textColor="@color/colorTextSecondary"
+                                android:textSize="12sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="S" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="S" />
                     </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
