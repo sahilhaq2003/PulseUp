@@ -74,7 +74,7 @@ class HabitsActivity : AppCompatActivity() {
         if (habits.isEmpty()) {
             // Show empty state
             val emptyView = TextView(this).apply {
-                text = "No habits yet. Tap + to add your first habit!"
+                text = getString(R.string.no_habits_yet)
                 textSize = 16f
                 setTextColor(resources.getColor(android.R.color.darker_gray, null))
                 gravity = android.view.Gravity.CENTER
@@ -125,13 +125,13 @@ class HabitsActivity : AppCompatActivity() {
         // Delete button
         deleteBtn.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Delete Habit")
-                .setMessage("Are you sure you want to delete '${habit.title}'?")
-                .setPositiveButton("Delete") { _, _ ->
+                .setTitle(getString(R.string.delete_habit))
+                .setMessage(getString(R.string.delete_habit_confirm, habit.title))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     HabitPrefs.deleteHabit(this, habit.id)
                     loadHabits()
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         }
         
@@ -153,9 +153,9 @@ class HabitsActivity : AppCompatActivity() {
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         AlertDialog.Builder(this)
-            .setTitle("Add New Habit")
+            .setTitle(getString(R.string.add_new_habit))
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -163,7 +163,7 @@ class HabitsActivity : AppCompatActivity() {
                     HabitPrefs.addHabit(this, title, target)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -179,9 +179,9 @@ class HabitsActivity : AppCompatActivity() {
         targetInput.setText(habit.targetPerDay.toString())
         
         AlertDialog.Builder(this)
-            .setTitle("Edit Habit")
+            .setTitle(getString(R.string.edit_habit))
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -190,7 +190,7 @@ class HabitsActivity : AppCompatActivity() {
                     HabitPrefs.updateHabit(this, updatedHabit)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)

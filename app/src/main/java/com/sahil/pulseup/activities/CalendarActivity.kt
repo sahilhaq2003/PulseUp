@@ -44,7 +44,7 @@ class CalendarActivity : AppCompatActivity() {
         
         // Optional ActionBar (may be null if using a custom header)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Mood Journal"
+        supportActionBar?.title = getString(R.string.mood_journal)
 
     daysGrid = findViewById(R.id.daysGrid)
 
@@ -168,41 +168,41 @@ class CalendarActivity : AppCompatActivity() {
     }
 
     private fun showMoodPicker(day: Int) {
-        val moods = arrayOf("😊", "😐", "😡")
+        val moods = arrayOf(getString(R.string.mood_happy), getString(R.string.mood_neutral), getString(R.string.mood_angry))
 
         // Use singleChoice to make user pick and confirm
         var selectedIndex = -1
         AlertDialog.Builder(this)
-            .setTitle("Select Mood for $day")
+            .setTitle(getString(R.string.select_mood_for_day, day))
             .setSingleChoiceItems(moods, -1) { _, which ->
                 selectedIndex = which
             }
-            .setPositiveButton("Save") { dialog, _ ->
+            .setPositiveButton(getString(R.string.save)) { dialog, _ ->
                 if (selectedIndex >= 0) {
                     try {
                         moodHistory[day] = moods[selectedIndex]
                         // Persist through a single API
                         MoodPrefs.setMood(this, currentYear, currentMonth, day, moods[selectedIndex])
                         renderCalendar()
-                        Toast.makeText(this, "Mood saved", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.mood_saved), Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
                         // Catch unexpected errors during save to avoid crash
-                        Toast.makeText(this, "Failed to save mood", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.failed_to_save_mood), Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
                 } else {
-                    Toast.makeText(this, "No mood selected", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.no_mood_selected), Toast.LENGTH_SHORT).show()
                 }
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-            .setNeutralButton("Clear") { dialog, _ ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+            .setNeutralButton(getString(R.string.clear)) { dialog, _ ->
                 try {
                     if (moodHistory.containsKey(day)) {
                         moodHistory.remove(day)
                         MoodPrefs.setMood(this, currentYear, currentMonth, day, null)
                         renderCalendar()
-                        Toast.makeText(this, "Mood cleared", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.mood_cleared), Toast.LENGTH_SHORT).show()
                     }
                 } catch (_: Exception) { }
                 dialog.dismiss()
@@ -219,16 +219,16 @@ class CalendarActivity : AppCompatActivity() {
                 try {
                     val obj = JSONObject(raw)
                     val count = obj.length()
-                    Toast.makeText(this, "Saved $count mood(s) for $currentMonth/$currentYear", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.saved_moods_count, count, currentMonth, currentYear), Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
-                    Toast.makeText(this, "Saved (couldn't parse stored data)", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.saved_couldnt_parse), Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Save completed, but nothing stored (raw=null)", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.save_completed_nothing_stored), Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Unable to save moods", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.unable_to_save_moods), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -239,7 +239,7 @@ class CalendarActivity : AppCompatActivity() {
             moodHistory.putAll(loaded as kotlin.collections.Map<Int, String>)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(this, "Unable to load saved moods", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.unable_to_load_moods), Toast.LENGTH_SHORT).show()
         }
     }
     
@@ -272,10 +272,7 @@ class CalendarActivity : AppCompatActivity() {
         val moodCount = moods.size
         val moodEmojis = moods.values.joinToString(" ")
         
-        val summary = "My mood journal for $monthName $currentYear:\n" +
-                "📅 $moodCount days tracked\n" +
-                "😊 Moods: $moodEmojis\n\n" +
-                "Tracked with PulseUp - Your wellness companion! 💚"
+        val summary = getString(R.string.mood_journal_summary, monthName, currentYear, moodCount, moodEmojis)
         
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -283,6 +280,6 @@ class CalendarActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, summary)
         }
         
-        startActivity(Intent.createChooser(shareIntent, "Share Mood Summary"))
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_mood_summary)))
     }
 }

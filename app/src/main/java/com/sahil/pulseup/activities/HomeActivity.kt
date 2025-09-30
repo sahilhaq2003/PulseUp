@@ -84,7 +84,7 @@ class HomeActivity : AppCompatActivity() {
             val day = today.get(Calendar.DAY_OF_MONTH)
             val moods = com.sahil.pulseup.data.MoodPrefs.loadMoods(this, month, year)
             val preview = findViewById<TextView>(R.id.moodPreviewEmoji)
-            preview?.text = moods[day] ?: "🙂"
+            preview?.text = moods[day] ?: getString(R.string.default_mood)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -99,9 +99,9 @@ class HomeActivity : AppCompatActivity() {
         try {
             // Map emojis to scores 0..1 for simple charting
             fun emojiToScore(emoji: String?): Float = when (emoji) {
-                "😊" -> 0.8f
-                "😐" -> 0.5f
-                "😡" -> 0.1f
+                getString(R.string.mood_happy) -> 0.8f
+                getString(R.string.mood_neutral) -> 0.5f
+                getString(R.string.mood_angry) -> 0.1f
                 else -> 0.6f
             }
 
@@ -138,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
         if (habits.isEmpty()) {
             // Show empty state
             val emptyView = TextView(this).apply {
-                text = "No habits yet. Tap + to add your first habit!"
+                text = getString(R.string.no_habits_yet)
                 textSize = 16f
                 setTextColor(resources.getColor(android.R.color.darker_gray, null))
                 gravity = android.view.Gravity.CENTER
@@ -158,7 +158,7 @@ class HomeActivity : AppCompatActivity() {
         // Add "See More" button if there are more than 2 habits
         if (habits.size > 2) {
             val seeMoreButton = Button(this).apply {
-                text = "See More (${habits.size - 2} more)"
+                text = getString(R.string.see_more_habits, habits.size - 2)
                 textSize = 14f
                 setTextColor(resources.getColor(R.color.colorWhite, null))
                 setPadding(24, 12, 24, 12)
@@ -215,13 +215,13 @@ class HomeActivity : AppCompatActivity() {
         // Delete button
         deleteBtn.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Delete Habit")
-                .setMessage("Are you sure you want to delete '${habit.title}'?")
-                .setPositiveButton("Delete") { _, _ ->
+                .setTitle(getString(R.string.delete_habit))
+                .setMessage(getString(R.string.delete_habit_confirm, habit.title))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     HabitPrefs.deleteHabit(this, habit.id)
                     loadHabits()
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         }
         
@@ -243,9 +243,9 @@ class HomeActivity : AppCompatActivity() {
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         AlertDialog.Builder(this)
-            .setTitle("Add New Habit")
+            .setTitle(getString(R.string.add_new_habit))
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -253,7 +253,7 @@ class HomeActivity : AppCompatActivity() {
                     HabitPrefs.addHabit(this, title, target)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -269,9 +269,9 @@ class HomeActivity : AppCompatActivity() {
         targetInput.setText(habit.targetPerDay.toString())
         
         AlertDialog.Builder(this)
-            .setTitle("Edit Habit")
+            .setTitle(getString(R.string.edit_habit))
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -280,7 +280,7 @@ class HomeActivity : AppCompatActivity() {
                     HabitPrefs.updateHabit(this, updatedHabit)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)

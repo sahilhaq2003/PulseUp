@@ -29,9 +29,9 @@ class ForgetPasswordActivity : AppCompatActivity() {
         resetButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
             if (email.isEmpty()) {
-                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_enter_email), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Password reset link sent to $email", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.password_reset_sent, email), Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()

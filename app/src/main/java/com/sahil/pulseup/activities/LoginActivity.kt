@@ -43,24 +43,24 @@ class LoginActivity : AppCompatActivity() {
             val password = passwordInput.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter both email and password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_enter_email_password), Toast.LENGTH_SHORT).show()
             } else {
                 val savedEmail = UserPrefs.getSavedEmail(this)
                 val savedPassword = UserPrefs.getSavedPassword(this)
                 if (email == savedEmail && password == savedPassword) {
                     UserPrefs.setLoggedIn(this, true)
-                    Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.welcome_back), Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainFragmentActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
         forgotPassword.setOnClickListener {
-            Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.forgot_password_clicked), Toast.LENGTH_SHORT).show()
         }
 
         signupText.setOnClickListener {
