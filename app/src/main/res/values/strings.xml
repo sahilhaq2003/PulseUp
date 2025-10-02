@@ -44,11 +44,11 @@
     <string name="mood_cleared">Mood cleared</string>
     <string name="unable_to_save_moods">Unable to save moods</string>
     <string name="unable_to_load_moods">Unable to load saved moods</string>
-    <string name="saved_moods_count">Saved %d mood(s) for %d/%d</string>
+    <string name="saved_moods_count" formatted="false">Saved %d mood(s) for %d/%d</string>
     <string name="saved_couldnt_parse">Saved (couldn\'t parse stored data)</string>
     <string name="save_completed_nothing_stored">Save completed, but nothing stored (raw=null)</string>
     <string name="share_mood_summary">Share Mood Summary</string>
-    <string name="mood_journal_summary">My mood journal for %s %d:\n📅 %d days tracked\n😊 Moods: %s\n\nTracked with PulseUp - Your wellness companion! 💚</string>
+    <string name="mood_journal_summary" formatted="false">My mood journal for %s %d:\n📅 %d days tracked\n😊 Moods: %s\n\nTracked with PulseUp - Your wellness companion! 💚</string>
     
     <!-- Profile strings -->
     <string name="select_profile_photo">Select Profile Photo</string>

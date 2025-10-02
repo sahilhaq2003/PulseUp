@@ -163,7 +163,7 @@ class HomeActivity : AppCompatActivity() {
                 setTextColor(resources.getColor(R.color.colorWhite, null))
                 setPadding(24, 12, 24, 12)
                 // Add rounded corners
-                background = resources.getDrawable(R.drawable.rounded_button_bg, null)
+                background = resources.getDrawable(R.drawable.button_corporate, null)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT

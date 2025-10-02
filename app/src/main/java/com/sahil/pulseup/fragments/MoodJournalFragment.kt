@@ -247,16 +247,13 @@ class MoodJournalFragment : Fragment() {
     }
     
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.mood_menu, menu)
+        // Menu removed - no longer using mood_menu resource
         super.onCreateOptionsMenu(menu, inflater)
     }
     
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.share_mood_summary -> {
-                shareMoodSummary()
-                true
-            }
+            // Share functionality now handled by share button in layout
             else -> super.onOptionsItemSelected(item)
         }
     }

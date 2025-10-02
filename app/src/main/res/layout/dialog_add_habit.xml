@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/colorSurface">
+    android:background="@drawable/card_professional">
 
     <!-- Header -->
     <LinearLayout
@@ -51,7 +51,7 @@
         android:maxLines="1"
         android:textColor="@color/colorTextPrimary"
         android:textColorHint="@color/colorTextSecondary"
-        android:background="@drawable/edittext_bg"
+            android:background="@drawable/input_field_professional"
         android:padding="16dp"
         android:layout_marginBottom="16dp" />
 
@@ -74,7 +74,7 @@
         android:text="1"
         android:textColor="@color/colorTextPrimary"
         android:textColorHint="@color/colorTextSecondary"
-        android:background="@drawable/edittext_bg"
+            android:background="@drawable/input_field_professional"
         android:padding="16dp" />
 
     <!-- Helper Text -->

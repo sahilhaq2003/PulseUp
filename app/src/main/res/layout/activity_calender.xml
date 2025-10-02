@@ -5,7 +5,7 @@
     android:id="@+id/calendar_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="@color/colorBackground"
     tools:context=".Calender">
 
     <ScrollView
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/padding_2xl">
 
             <!-- Header -->
             <LinearLayout
@@ -42,11 +42,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/spacing_lg"
                     android:text="Mood Journal"
-                    android:textColor="@android:color/black"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    style="@style/TextAppearance.PulseUp.Title1" />
 
                 <View
                     android:layout_width="0dp"
@@ -67,48 +65,49 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/colorSurface">
+                android:layout_marginTop="@dimen/spacing_2xl"
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/mood_professional_happy"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:padding="@dimen/padding_2xl">
 
                     <ImageView
                         android:id="@+id/prevMonth"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/button_outline_background"
+                        android:contentDescription="@string/previous"
                         android:padding="8dp"
-                        android:src="@drawable/ic_arrow_back"
-                        android:contentDescription="@string/previous" />
+                        android:src="@drawable/ic_arrow_back" />
 
                     <TextView
                         android:id="@+id/monthTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginHorizontal="16dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
                         android:text="July 2025"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center" />
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/nextMonth"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/button_outline_background"
+                        android:contentDescription="@string/next"
                         android:padding="8dp"
-                        android:src="@drawable/ic_arrow_forward"
-                        android:contentDescription="@string/next" />
+                        android:src="@drawable/ic_arrow_forward" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -117,12 +116,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="4dp">
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/mood_professional_happy"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -222,10 +223,10 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="2dp"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

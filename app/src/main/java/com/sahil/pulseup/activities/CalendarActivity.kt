@@ -244,7 +244,7 @@ class CalendarActivity : AppCompatActivity() {
     }
     
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.mood_menu, menu)
+        // Menu removed - no longer using mood_menu resource
         return true
     }
     
@@ -254,10 +254,7 @@ class CalendarActivity : AppCompatActivity() {
                 finish()
                 true
             }
-            R.id.share_mood_summary -> {
-                shareMoodSummary()
-                true
-            }
+            // Share functionality now handled by share button in layout
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -280,6 +277,6 @@ class CalendarActivity : AppCompatActivity() {
             putExtra(Intent.EXTRA_TEXT, summary)
         }
         
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_mood_summary)))
+        startActivity(Intent.createChooser(shareIntent, "Share Mood Summary"))
     }
 }

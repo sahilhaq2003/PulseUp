@@ -1,19 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0A2540</color>
-    <color name="colorSecondary">#555555</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorInactiveDot">#CCCCCC</color>
+    <!-- Professional Color Palette - Clean & Minimalist -->
+    <color name="colorPrimary">#2563EB</color>
+    <color name="colorSecondary">#64748B</color>
+    <color name="colorAccent">#0891B2</color>
     
-    <!-- Professional UI Colors -->
+    <!-- Status Colors -->
+    <color name="colorSuccess">#059669</color>
+    <color name="colorWarning">#D97706</color>
+    <color name="colorError">#DC2626</color>
+    
+    <!-- Background Colors - Clean & Professional -->
     <color name="colorBackground">#F8F9FA</color>
-    <color name="colorHabitsBackground">#E8F4FD</color>
-    <color name="colorTextPrimary">#212529</color>
-    <color name="colorTextSecondary">#6C757D</color>
     <color name="colorSurface">#FFFFFF</color>
-    <color name="colorCardBackground">#F0F8FF</color>
-    <color name="colorPrimaryLight">#E3F2FD</color>
-    <color name="colorSuccess">#28A745</color>
-    <color name="colorWarning">#FFC107</color>
-    <color name="colorError">#DC3545</color>
+    <color name="colorSurfaceVariant">#F1F3F4</color>
+    <color name="colorCardBackground">#FFFFFF</color>
+    
+    <!-- Text Colors - Professional Hierarchy -->
+    <color name="colorTextPrimary">#1F2937</color>
+    <color name="colorTextSecondary">#6B7280</color>
+    <color name="colorTextTertiary">#9CA3AF</color>
+    <color name="colorTextAccent">#2563EB</color>
+    
+    <!-- Interactive Colors -->
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorPrimaryLight">#EFF6FF</color>
+    
+    <!-- Container Colors -->
+    <color name="colorPrimaryContainer">#F0F9FF</color>
+    <color name="colorSecondaryContainer">#F8FAFC</color>
+    
+    <!-- Border Colors -->
+    <color name="colorBorder">#E5E7EB</color>
+    <color name="colorBorderFocus">#2563EB</color>
+    
+    <!-- Professional Mood Colors -->
+    <color name="moodHappy">#059669</color>
+    <color name="moodHappyBg">#ECFDF5</color>
+    <color name="moodNeutral">#6B7280</color>
+    <color name="moodNeutralBg">#F9FAFB</color>
+    <color name="moodSad">#DC2626</color>
+    <color name="moodSadBg">#FEF2F2</color>
+    
+    <!-- Subtle Shadows -->
+    <color name="shadowLight">#0A000000</color>
+    <color name="shadowMedium">#14000000</color>
+    
+    <!-- Error States -->
+    <color name="colorErrorContainer">#FEF2F2</color>
+    <color name="colorOnErrorContainer">#9F1239</color>
+    <color name="colorOnError">#FFFFFF</color>
+    
+    <!-- Legacy compatibility -->
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorInactiveDot">#E5E7EB</color>
+    <color name="colorHabitsBackground">#F8FAFC</color>
 </resources>
