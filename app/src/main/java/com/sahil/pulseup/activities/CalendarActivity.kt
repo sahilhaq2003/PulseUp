@@ -133,8 +133,10 @@ class CalendarActivity : AppCompatActivity() {
             val dayView = TextView(this).apply {
                 text = day.toString()
                 textSize = 16f
+                setTextColor(resources.getColor(R.color.colorTextPrimary, null))
                 gravity = Gravity.CENTER
-                setPadding(0, 20, 0, 20)
+                setPadding(16, 20, 16, 20)
+                setBackgroundResource(R.drawable.calendar_day_cell)
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 0
                     columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
@@ -157,10 +159,10 @@ class CalendarActivity : AppCompatActivity() {
                     }
                 }
 
-                // Highlight today
+                // Highlight today with professional styling
                 if (day == todayDay && currentMonth == today.get(Calendar.MONTH) && currentYear == today.get(Calendar.YEAR)) {
-                    setBackgroundColor(resources.getColor(android.R.color.darker_gray, null))
-                    setTextColor(resources.getColor(android.R.color.white, null))
+                    setBackgroundResource(R.drawable.calendar_day_cell)
+                    setTextColor(resources.getColor(R.color.colorTextPrimary, null))
                 }
             }
             daysGrid?.addView(dayView)

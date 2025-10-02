@@ -10,7 +10,7 @@
                 </shape>
             </item>
             
-            <!-- Clean button surface -->
+            <!-- Orange button surface -->
             <item android:top="0dp" android:left="0dp" android:right="2dp" android:bottom="2dp">
                 <shape android:shape="oval">
                     <solid android:color="@color/colorPrimary" />

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorOnPrimary">
+    <item>
+        <layer-list>
+            <!-- Professional shadow -->
+            <item android:top="3dp" android:left="3dp" android:right="3dp" android:bottom="3dp">
+                <shape android:shape="oval">
+                    <solid android:color="@color/shadowMedium" />
+                </shape>
+            </item>
+            
+            <!-- Orange button surface with gradient -->
+            <item android:top="0dp" android:left="0dp" android:right="6dp" android:bottom="6dp">
+                <shape android:shape="oval">
+                    <gradient
+                        android:startColor="@color/colorPrimary"
+                        android:endColor="@color/colorAccent"
+                        android:type="radial"
+                        android:gradientRadius="90dp" />
+                </shape>
+            </item>
+            
+            <!-- Subtle highlight -->
+            <item android:top="8dp" android:left="8dp" android:right="40dp" android:bottom="40dp">
+                <shape android:shape="oval">
+                    <solid android:color="#20FFFFFF" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</ripple>

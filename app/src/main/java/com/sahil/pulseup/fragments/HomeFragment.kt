@@ -39,6 +39,8 @@ class HomeFragment : Fragment() {
             showAddHabitDialog()
         }
 
+        setupMoodSelection()
+
         val moodJournalCard: CardView = view.findViewById(R.id.moodJournalCard)
         moodJournalCard.setOnClickListener {
             startActivity(Intent(requireContext(), CalendarActivity::class.java))
@@ -410,5 +412,109 @@ class HomeFragment : Fragment() {
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun setupMoodSelection() {
+        val moodPrefs = requireContext().getSharedPreferences("MoodPrefs", android.content.Context.MODE_PRIVATE)
+        
+        // Setup mood selection listeners
+        requireView().findViewById<LinearLayout>(R.id.moodHappyContainer)?.setOnClickListener {
+            saveTodayMood("Happy")
+            showMoodSelectedFeedback("Happy")
+        }
+        
+        requireView().findViewById<LinearLayout>(R.id.moodNeutralContainer)?.setOnClickListener {
+            saveTodayMood("Neutral")
+            showMoodSelectedFeedback("Neutral")
+        }
+        
+        requireView().findViewById<LinearLayout>(R.id.moodSadContainer)?.setOnClickListener {
+            saveTodayMood("Sad")
+            showMoodSelectedFeedback("Sad")
+        }
+        
+        // Show today's mood if already selected
+        loadTodayMood()
+    }
+    
+    private fun saveTodayMood(mood: String) {
+        val moodPrefs = requireContext().getSharedPreferences("MoodPrefs", android.content.Context.MODE_PRIVATE)
+        val editor = moodPrefs.edit()
+        
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        editor.putString("today_mood", mood)
+        editor.putString("today_mood_date", today)
+        editor.apply()
+        
+        // Also save to the mood journal calendar system
+        val calendar = java.util.Calendar.getInstance()
+        val year = calendar.get(java.util.Calendar.YEAR)
+        val month = calendar.get(java.util.Calendar.MONTH)
+        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+        
+        // Convert mood text to emoji
+        val moodEmoji = when (mood) {
+            "Happy" -> "😊"
+            "Neutral" -> "😐"
+            "Sad" -> "😡"
+            else -> "😐"
+        }
+        
+        // Save to mood journal calendar
+        com.sahil.pulseup.data.MoodPrefs.setMood(requireContext(), year, month, day, moodEmoji)
+    }
+    
+    private fun loadTodayMood() {
+        // First check if we have today's mood from the simple selection
+        val moodPrefs = requireContext().getSharedPreferences("MoodPrefs", android.content.Context.MODE_PRIVATE)
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        val savedDate = moodPrefs.getString("today_mood_date", "")
+        val savedMood = moodPrefs.getString("today_mood", "")
+        
+        if (savedDate == today && !savedMood.isNullOrEmpty()) {
+            highlightSelectedMood(savedMood)
+        } else {
+            // Check if mood was set through mood journal calendar
+            val calendar = java.util.Calendar.getInstance()
+            val year = calendar.get(java.util.Calendar.YEAR)
+            val month = calendar.get(java.util.Calendar.MONTH)
+            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+            
+            val moodEmoji = com.sahil.pulseup.data.MoodPrefs.getMood(requireContext(), year, month, day)
+            moodEmoji?.let { emoji ->
+                val moodText = when (emoji) {
+                    "😊" -> "Happy"
+                    "😐" -> "Neutral"
+                    "😡" -> "Sad"
+                    else -> null
+                }
+                if (moodText != null) {
+                    highlightSelectedMood(moodText)
+                }
+            }
+        }
+    }
+    
+    private fun highlightSelectedMood(mood: String) {
+        // Reset all mood containers first
+        requireView().findViewById<LinearLayout>(R.id.moodHappyContainer)?.alpha = 0.7f
+        requireView().findViewById<LinearLayout>(R.id.moodNeutralContainer)?.alpha = 0.7f
+        requireView().findViewById<LinearLayout>(R.id.moodSadContainer)?.alpha = 0.7f
+        
+        // Highlight selected mood
+        when (mood) {
+            "Happy" -> requireView().findViewById<LinearLayout>(R.id.moodHappyContainer)?.alpha = 1.0f
+            "Neutral" -> requireView().findViewById<LinearLayout>(R.id.moodNeutralContainer)?.alpha = 1.0f
+            "Sad" -> requireView().findViewById<LinearLayout>(R.id.moodSadContainer)?.alpha = 1.0f
+        }
+    }
+    
+    private fun showMoodSelectedFeedback(mood: String) {
+        highlightSelectedMood(mood)
+        Toast.makeText(requireContext(), "Mood recorded: $mood", Toast.LENGTH_SHORT).show()
     }
 }
