@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -90,12 +92,65 @@ class MainFragmentActivity : AppCompatActivity() {
         val navItems = listOf(R.id.nav_home, R.id.nav_habits, R.id.nav_mood, R.id.nav_settings)
         navItems.forEach { id ->
             val item = findViewById<LinearLayout>(id)
-            item?.setBackgroundColor(
-                if (id == selectedId) 
-                    resources.getColor(android.R.color.darker_gray, null) 
-                else 
-                    resources.getColor(android.R.color.transparent, null)
-            )
+            if (item != null) {
+                // Find the first ImageView in the LinearLayout
+                val imageViewCount = item.childCount
+                for (i in 0 until imageViewCount) {
+                    val child = item.getChildAt(i)
+                    if (child is ImageView) {
+                        if (id == selectedId) {
+                            child.setColorFilter(resources.getColor(R.color.colorPrimary, null))
+                        } else {
+                            child.setColorFilter(resources.getColor(R.color.colorTextSecondary, null))
+                        }
+                        break
+                    }
+                }
+                
+                // Update background
+                if (id == selectedId) {
+                    item.setBackgroundResource(R.drawable.card_professional)
+                } else {
+                    item.setBackgroundResource(R.drawable.card_professional)
+                }
+            }
+        }
+        
+        // Update stats in tablet layout
+        updateTabletStats()
+    }
+    
+    private fun updateTabletStats() {
+        // Update quick stats shown in tablet navigation (only if views exist)
+        try {
+            findViewById<TextView>(R.id.habitsCompleted)?.text = com.sahil.pulseup.data.HabitPrefs.getHabits(this).count { habit ->
+                com.sahil.pulseup.data.HabitPrefs.getProgress(this, habit.id) >= habit.targetPerDay
+            }.toString()
+            
+            // Update today's mood
+            val today = java.util.Calendar.getInstance()
+            val year = today.get(java.util.Calendar.YEAR)
+            val month = today.get(java.util.Calendar.MONTH)
+            val day = today.get(java.util.Calendar.DAY_OF_MONTH)
+            val todaysMood = com.sahil.pulseup.data.MoodPrefs.getMood(this, year, month, day)
+            findViewById<TextView>(R.id.moodEntry)?.text = todaysMood ?: "😐"
+        } catch (e: Exception) {
+            // Views don't exist, ignore
+        }
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        if (isTabletLayout) {
+            updateTabletStats()
+            val currentType = when(currentFragment) {
+                is HomeFragment -> R.id.nav_home
+                is HabitsFragment -> R.id.nav_habits  
+                is MoodJournalFragment -> R.id.nav_mood
+                is SettingsFragment -> R.id.nav_settings
+                else -> R.id.nav_home
+            }
+            updateNavigationSelection(currentType)
         }
     }
     
@@ -104,6 +159,17 @@ class MainFragmentActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+            
+        if (isTabletLayout) {
+            val fragmentType = when(fragment) {
+                is HomeFragment -> R.id.nav_home
+                is HabitsFragment -> R.id.nav_habits
+                is MoodJournalFragment -> R.id.nav_mood
+                is SettingsFragment -> R.id.nav_settings
+                else -> R.id.nav_home
+            }
+            updateNavigationSelection(fragmentType)
+        }
     }
     
     override fun onBackPressed() {
