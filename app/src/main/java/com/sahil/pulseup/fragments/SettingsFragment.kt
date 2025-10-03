@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.google.android.material.textfield.TextInputEditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.sahil.pulseup.R
 import com.sahil.pulseup.activities.*
+import com.sahil.pulseup.activities.MainFragmentActivity
 import com.sahil.pulseup.data.UserPrefs
 import com.sahil.pulseup.data.HydrationPrefs
 
@@ -41,16 +43,17 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val backBtn = view.findViewById<ImageButton>(R.id.backBtn)
+        val backBtn = view.findViewById<ImageView>(R.id.backBtn)
         backBtn.setOnClickListener { 
-            requireActivity().finish()
+            // Switch back to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
         }
 
         val profilePhoto = view.findViewById<ImageView>(R.id.profilePhoto)
         val changePhoto = view.findViewById<Button>(R.id.changePhotoBtn)
-        val nameInput = view.findViewById<EditText>(R.id.nameInput)
-        val emailInput = view.findViewById<EditText>(R.id.emailInput)
-        val phoneInput = view.findViewById<EditText>(R.id.phoneInput)
+        val nameInput = view.findViewById<TextInputEditText>(R.id.nameInput)
+        val emailInput = view.findViewById<TextInputEditText>(R.id.emailInput)
+        val phoneInput = view.findViewById<TextInputEditText>(R.id.phoneInput)
         val saveBtn = view.findViewById<Button>(R.id.saveBtn)
         val logoutBtn = view.findViewById<Button>(R.id.logoutBtn)
         
@@ -150,6 +153,19 @@ class SettingsFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             requireActivity().finish()
+        }
+
+        // Bottom navigation
+        view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
+            // Switch to HabitsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HabitsFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
+            // Switch to MoodJournalFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
+            // Already on Profile/Settings - do nothing
         }
     }
 

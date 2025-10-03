@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sahil.pulseup.R
 import com.sahil.pulseup.activities.*
+import com.sahil.pulseup.activities.MainFragmentActivity
 import com.sahil.pulseup.data.MoodPrefs
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -50,7 +51,8 @@ class MoodJournalFragment : Fragment() {
         loadMoods()
 
         view.findViewById<ImageView?>(R.id.backBtn)?.setOnClickListener { 
-            requireActivity().finish()
+            // Switch back to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
         }
 
         val prevMonth = view.findViewById<ImageView?>(R.id.prevMonth)
@@ -64,10 +66,12 @@ class MoodJournalFragment : Fragment() {
             // already on Mood, do nothing
         }
         view.findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            // Switch to SettingsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(SettingsFragment())
         }
         view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            startActivity(Intent(requireContext(), MainFragmentActivity::class.java))
+            // Switch to HabitsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HabitsFragment())
         }
 
         renderCalendar()

@@ -34,7 +34,7 @@
             android:id="@+id/addHabitBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/fab_professional_orange_refined"
+            android:background="@drawable/dot_active"
             android:contentDescription="Add Habit"
             android:padding="8dp"
             android:src="@android:drawable/ic_input_add"
