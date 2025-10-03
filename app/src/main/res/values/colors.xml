@@ -1,17 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0A2540</color>
-    <color name="colorSecondary">#555555</color>
-    <color name="colorWhite">#FFFFFF</color>
-    <color name="colorInactiveDot">#CCCCCC</color>
+    <!-- Professional Orange-White-Black Theme -->
+    <color name="colorPrimary">#FF6B35</color>            <!-- Vibrant Orange -->
+    <color name="colorSecondary">#2C2C2C</color>          <!-- Dark Gray -->
+    <color name="colorAccent">#FF8C42</color>              <!-- Light Orange -->
     
-    <!-- Professional UI Colors -->
-    <color name="colorBackground">#F8F9FA</color>
-    <color name="colorTextPrimary">#212529</color>
-    <color name="colorTextSecondary">#6C757D</color>
-    <color name="colorSurface">#FFFFFF</color>
-    <color name="colorPrimaryLight">#E3F2FD</color>
-    <color name="colorSuccess">#28A745</color>
-    <color name="colorWarning">#FFC107</color>
-    <color name="colorError">#DC3545</color>
+    <!-- Status Colors -->
+    <color name="colorSuccess">#00A86B</color>            <!-- Green -->
+    <color name="colorWarning">#FF6B35</color>             <!-- Orange Warning -->
+    <color name="colorError">#E74C3C</color>               <!-- Red -->
+    
+    <!-- Background Colors - Professional White & Dark -->
+    <color name="colorBackground">#FAFAFA</color>         <!-- Light Gray Background -->
+    <color name="colorSurface">#FFFFFF</color>            <!-- Pure White -->
+    <color name="colorSurfaceVariant">#F5F5F5</color>      <!-- Very Light Gray -->
+    <color name="colorCardBackground">#FFFFFF</color>     <!-- Clean White Cards -->
+    
+    <!-- Text Colors - Professional Black Hierarchy -->
+    <color name="colorTextPrimary">#212121</color>        <!-- Pure Black -->
+    <color name="colorTextSecondary">#424242</color>       <!-- Dark Gray -->
+    <color name="colorTextTertiary">#757575</color>        <!-- Medium Gray -->
+    <color name="colorTextAccent">#FF6B35</color>          <!-- Orange accent -->
+    
+    <!-- Interactive Colors -->
+    <color name="colorOnPrimary">#FFFFFF</color>          <!-- White on Orange -->
+    <color name="colorOnSecondary">#FFFFFF</color>        <!-- White on Dark -->
+    <color name="colorPrimaryLight">#FFF4E6</color>        <!-- Very Light Orange -->
+    
+    <!-- Container Colors - Professional -->
+    <color name="colorPrimaryContainer">#FFF2E8</color>    <!-- Light Orange -->
+    <color name="colorSecondaryContainer">#F8F9FA</color>  <!-- Light Gray -->
+    
+    <!-- Border Colors - Professional Lines -->
+    <color name="colorBorder">#E0E0E0</color>             <!-- Light Gray Border -->
+    <color name="colorBorderFocus">#FF6B35</color>         <!-- Orange Focus -->
+    
+    <!-- Professional Mood Colors -->
+    <color name="moodHappy">#4CAF50</color>               <!-- Professional Green -->
+    <color name="moodHappyBg">#E8F5E8</color>             <!-- Light Green Background -->
+    <color name="moodNeutral">#757575</color>             <!-- Professional Gray -->
+    <color name="moodNeutralBg">#F5F5F5</color>           <!-- Light Gray Background -->
+    <color name="moodSad">#F44336</color>                 <!-- Professional Red -->
+    <color name="moodSadBg">#FFEBEE</color>               <!-- Light Red Background -->
+    
+    <!-- Professional Navigation Colors -->
+    <color name="navBackground">#FFFFFF</color>           <!-- White Navigation -->
+    <color name="navSelected">#FF6B35</color>             <!-- Orange Selected -->
+    <color name="navText">#424242</color>                 <!-- Dark Gray Text -->
+    <color name="navSelectedBackground">#FFF4E6</color>    <!-- Light Orange Background -->
+    
+    <!-- Professional Shades -->
+    <color name="shade100">#FFFFFF</color>                <!-- Pure White -->
+    <color name="shade200">#FAFAFA</color>                <!-- Light Gray -->
+    <color name="shade300">#F0F0F0</color>                <!-- Medium Light Gray -->
+    <color name="shade400">#E0E0E0</color>                <!-- Border Gray -->
+    <color name="shade500">#BDBDBD</color>                <!-- Medium Gray -->
+    <color name="shade600">#757575</color>                <!-- Dark Gray -->
+    <color name="shade700">#424242</color>                <!-- Very Dark Gray -->
+    <color name="shade800">#212121</color>                <!-- Almost Black -->
+    <color name="shade900">#000000</color>                <!-- Pure Black -->
+    
+    <!-- Professional Shadows -->
+    <color name="shadowLight">#0F000000</color>           <!-- Light Shadow -->
+    <color name="shadowMedium">#1A000000</color>          <!-- Medium Shadow -->
+    <color name="shadowDark">#33000000</color>            <!-- Dark Shadow -->
+    
+    <!-- Error States -->
+    <color name="colorErrorContainer">#FFEBEE</color>
+    <color name="colorOnErrorContainer">#C62828</color>
+    <color name="colorOnError">#FFFFFF</color>
+    
+    <!-- Legacy compatibility -->
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorInactiveDot">#E0E0E0</color>
+    <color name="colorHabitsBackground">#F8F9FA</color>
 </resources>

@@ -47,16 +47,6 @@ class HabitsActivity : AppCompatActivity() {
             finish()
         }
         
-        // Bottom navigation
-        findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
-            startActivity(Intent(this, CalendarActivity::class.java))
-        }
-        findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            // Already on Habits - do nothing
-        }
-        findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
-        }
         
         loadHabits()
     }
@@ -74,7 +64,7 @@ class HabitsActivity : AppCompatActivity() {
         if (habits.isEmpty()) {
             // Show empty state
             val emptyView = TextView(this).apply {
-                text = "No habits yet. Tap + to add your first habit!"
+                text = getString(R.string.no_habits_yet)
                 textSize = 16f
                 setTextColor(resources.getColor(android.R.color.darker_gray, null))
                 gravity = android.view.Gravity.CENTER
@@ -102,7 +92,29 @@ class HabitsActivity : AppCompatActivity() {
         val deleteBtn = habitView.findViewById<ImageView>(R.id.habitDeleteBtn)
         
         titleText.text = habit.title
+        
+        // Update progress percentage text if it exists
+        val progressPercentText = habitView.findViewById<TextView>(R.id.habitProgressPercent)
+        val streakText = habitView.findViewById<TextView>(R.id.habitStreak)
+        
         updateHabitProgress(habit, progressText, progressBar, checkbox)
+        
+        // Update additional UI elements if they exist
+        val progress = HabitPrefs.getProgress(this, habit.id)
+        val percentage = if (habit.targetPerDay > 0) {
+            ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+        } else {
+            0
+        }
+        
+        progressPercentText?.text = "$percentage%"
+        
+        if (progress >= habit.targetPerDay) {
+            streakText?.visibility = View.VISIBLE
+            streakText?.text = "🔥 ${progress} day streak"
+        } else {
+            streakText?.visibility = View.GONE
+        }
         
         // Checkbox click - toggle completion
         checkbox.setOnCheckedChangeListener { _, isChecked ->
@@ -115,6 +127,23 @@ class HabitsActivity : AppCompatActivity() {
                 }
             }
             updateHabitProgress(habit, progressText, progressBar, checkbox)
+            
+            // Update additional UI elements
+            val progress = HabitPrefs.getProgress(this, habit.id)
+            val percentage = if (habit.targetPerDay > 0) {
+                ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+            } else {
+                0
+            }
+            
+            progressPercentText?.text = "$percentage%"
+            
+            if (progress >= habit.targetPerDay) {
+                streakText?.visibility = View.VISIBLE
+                streakText?.text = "🔥 ${progress} day streak"
+            } else {
+                streakText?.visibility = View.GONE
+            }
         }
         
         // Edit button
@@ -125,13 +154,13 @@ class HabitsActivity : AppCompatActivity() {
         // Delete button
         deleteBtn.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Delete Habit")
-                .setMessage("Are you sure you want to delete '${habit.title}'?")
-                .setPositiveButton("Delete") { _, _ ->
+                .setTitle(getString(R.string.delete_habit))
+                .setMessage(getString(R.string.delete_habit_confirm, habit.title))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     HabitPrefs.deleteHabit(this, habit.id)
                     loadHabits()
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         }
         
@@ -153,9 +182,8 @@ class HabitsActivity : AppCompatActivity() {
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         AlertDialog.Builder(this)
-            .setTitle("Add New Habit")
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -163,7 +191,7 @@ class HabitsActivity : AppCompatActivity() {
                     HabitPrefs.addHabit(this, title, target)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -179,9 +207,8 @@ class HabitsActivity : AppCompatActivity() {
         targetInput.setText(habit.targetPerDay.toString())
         
         AlertDialog.Builder(this)
-            .setTitle("Edit Habit")
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -190,7 +217,7 @@ class HabitsActivity : AppCompatActivity() {
                     HabitPrefs.updateHabit(this, updatedHabit)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)

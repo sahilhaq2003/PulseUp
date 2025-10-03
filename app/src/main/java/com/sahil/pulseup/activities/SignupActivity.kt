@@ -37,10 +37,10 @@ class SignupActivity : AppCompatActivity() {
             val password = passwordInput.text.toString().trim()
 
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.please_fill_all_fields), Toast.LENGTH_SHORT).show()
             } else {
                 UserPrefs.saveUser(this, name, email, password)
-                Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.account_created), Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainFragmentActivity::class.java)
                 startActivity(intent)
                 finish()

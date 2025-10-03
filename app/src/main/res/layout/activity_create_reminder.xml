@@ -12,33 +12,39 @@
         android:padding="24dp">
 
         <!-- Header Section -->
+
+        <!-- Icon and Description Card -->
         <ImageView
             android:id="@+id/backButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_back"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/circle_bg"
+            android:contentDescription="@string/back"
             android:padding="12dp"
-            android:contentDescription="Back"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintBottom_toBottomOf="@id/headerTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/headerTitle" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/headerTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="217dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="Create Reminder"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/colorTextPrimary"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/backButton"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintHorizontal_bias="0.109"
+            app:layout_constraintStart_toEndOf="@id/backButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Icon and Description Card -->
         <androidx.cardview.widget.CardView
             android:id="@+id/headerCard"
             android:layout_width="0dp"

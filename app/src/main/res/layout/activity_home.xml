@@ -6,7 +6,7 @@
     android:id="@+id/home_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="@color/colorBackground"
     tools:context=".Home">
 
     <!-- Fixed Header -->
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="20dp"
-        android:background="#FAFAFA"
+        android:background="@color/colorBackground"
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,20 +29,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Daily Habit Tracker"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="28sp"
             android:textStyle="bold" />
 
         <!-- Add Habit Button -->
         <ImageView
             android:id="@+id/addHabitBtn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@android:drawable/ic_input_add"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_add"
+            android:padding="8dp"
+            android:background="@drawable/fab_professional"
             android:contentDescription="Add Habit"
-            app:tint="@android:color/black" />
+            app:tint="@color/colorWhite" />
     </LinearLayout>
 
     <!-- Scrollable Content -->
@@ -68,8 +68,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <LinearLayout
                     android:id="@+id/habitsContainer"
@@ -79,6 +80,133 @@
                     android:padding="16dp" />
             </androidx.cardview.widget.CardView>
 
+            <!-- Quick Mood Selection Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="How are you feeling today?"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:baselineAligned="false">
+
+                        <!-- Happy -->
+                        <LinearLayout
+                            android:id="@+id/moodHappyContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_professional_happy"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:layout_margin="4dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_happy"
+                                android:tint="@color/moodHappy" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Happy"
+                                android:textColor="@color/moodHappy"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Neutral -->
+                        <LinearLayout
+                            android:id="@+id/moodNeutralContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_professional_neutral"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:layout_margin="4dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_neutral"
+                                android:tint="@color/moodNeutral" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Neutral"
+                                android:textColor="@color/moodNeutral"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Sad -->
+                        <LinearLayout
+                            android:id="@+id/moodSadContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_professional_sad"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:layout_margin="4dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_sad"
+                                android:tint="@color/moodSad" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Sad"
+                                android:textColor="@color/moodSad"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
             <!-- Mood Journal Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/moodJournalCard"
@@ -86,8 +214,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp">
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -99,7 +228,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mood Journal"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +306,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hydration Reminder"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
 
@@ -199,19 +328,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:text="Next reminder: 10:00 AM"
-                            android:textColor="@android:color/darker_gray"
+                            android:textColor="@color/colorTextSecondary"
                             android:textSize="15sp" />
 
                         <ImageButton
                             android:id="@+id/hydrationAddBtn"
-                            android:layout_width="163dp"
-                            android:layout_height="42dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="4dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:background="@drawable/fab_professional"
                             android:contentDescription="Add reminder"
-                            android:src="@android:drawable/ic_input_add"
-                            app:tint="@color/colorPrimary" />
+                            android:src="@drawable/ic_add"
+                            android:padding="8dp"
+                            app:tint="@color/colorWhite" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -237,7 +367,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Mood Trend"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"

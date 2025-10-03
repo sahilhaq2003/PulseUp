@@ -158,13 +158,13 @@ class CreateReminderActivity : AppCompatActivity() {
         
         // Create success message
         val timeString = String.format("%02d:%02d", hour, minute)
-        val message = "Reminder set for $timeString"
+        val message = getString(R.string.reminder_set_for, timeString)
         
         // Animate button to show success
         val originalText = saveButton.text
         val originalBackground = saveButton.background
         
-        saveButton.text = "✓ Created!"
+        saveButton.text = getString(R.string.created)
         saveButton.setBackgroundColor(resources.getColor(android.R.color.holo_green_dark, null))
         
         // Animate scale

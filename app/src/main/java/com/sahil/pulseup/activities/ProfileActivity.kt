@@ -80,7 +80,7 @@ class ProfileActivity : AppCompatActivity() {
 
         changePhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-            pickImage.launch(Intent.createChooser(intent, "Select Profile Photo"))
+            pickImage.launch(Intent.createChooser(intent, getString(R.string.select_profile_photo)))
         }
 
         // Hydration settings listeners
@@ -94,7 +94,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
             HydrationPrefs.setEnabled(this, isChecked)
-            Toast.makeText(this, if (isChecked) "Hydration reminders enabled" else "Hydration reminders disabled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, if (isChecked) getString(R.string.hydration_reminders_enabled) else getString(R.string.hydration_reminders_disabled), Toast.LENGTH_SHORT).show()
         }
         
         hydrationInterval.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -135,10 +135,10 @@ class ProfileActivity : AppCompatActivity() {
             val email = emailInput.text.toString().trim()
             val phone = phoneInput.text.toString().trim()
             if (name.isEmpty() || email.isEmpty()) {
-                Toast.makeText(this, "Name and Email are required", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.name_email_required), Toast.LENGTH_SHORT).show()
             } else {
                 UserPrefs.updateProfile(this, name, email, phone)
-                Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.profile_saved), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -159,7 +159,7 @@ class ProfileActivity : AppCompatActivity() {
             hydrationSwitch.isChecked = granted
             HydrationPrefs.setEnabled(this, granted)
             if (!granted) {
-                Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -169,8 +169,8 @@ class ProfileActivity : AppCompatActivity() {
         val startHour = HydrationPrefs.getStartHour(this)
         val endHour = HydrationPrefs.getEndHour(this)
         
-        findViewById<TextView>(R.id.hydrationIntervalText)?.text = "Every $intervalHours hours"
-        findViewById<TextView>(R.id.hydrationStartText)?.text = String.format("%02d:00", startHour)
-        findViewById<TextView>(R.id.hydrationEndText)?.text = String.format("%02d:00", endHour)
+        findViewById<TextView>(R.id.hydrationIntervalText)?.text = getString(R.string.every_hours, intervalHours)
+        findViewById<TextView>(R.id.hydrationStartText)?.text = getString(R.string.time_format, startHour)
+        findViewById<TextView>(R.id.hydrationEndText)?.text = getString(R.string.time_format, endHour)
     }
 }

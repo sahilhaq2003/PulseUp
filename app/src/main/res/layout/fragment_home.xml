@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
     tools:context=".fragments.HomeFragment">
 
     <!-- Fixed Header -->
@@ -14,35 +12,33 @@
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        android:background="#FAFAFA"
+        android:background="@drawable/professional_header"
         android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_2xl"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Title -->
         <TextView
             android:id="@+id/homeTitle"
+            style="@style/TextAppearance.PulseUp.Headline2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Daily Habit Tracker"
-            android:textColor="@android:color/black"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:text="PulseUp" />
 
         <!-- Add Habit Button -->
         <ImageView
             android:id="@+id/addHabitBtn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@android:drawable/ic_input_add"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/fab_professional_orange_refined"
             android:contentDescription="Add Habit"
-            app:tint="@android:color/black" />
+            android:padding="8dp"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="@color/colorWhite" />
     </LinearLayout>
 
     <!-- Scrollable Content -->
@@ -51,10 +47,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,15 +64,143 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp">
+                app:cardCornerRadius="@dimen/radius_xl"
+                app:cardElevation="@dimen/elevation_2">
 
                 <LinearLayout
                     android:id="@+id/habitsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/card_professional_white"
                     android:orientation="vertical"
                     android:padding="16dp" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Quick Mood Selection Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/mood_card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="How are you feeling today?"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <!-- Happy -->
+                        <LinearLayout
+                            android:id="@+id/moodHappyContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_button_professional_happy"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_happy_professional"
+                                android:tint="@color/colorTextPrimary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Happy"
+                                android:textColor="@color/colorTextPrimary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Neutral -->
+                        <LinearLayout
+                            android:id="@+id/moodNeutralContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_button_professional_neutral"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_neutral_professional"
+                                android:tint="@color/colorTextSecondary" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Neutral"
+                                android:textColor="@color/colorTextSecondary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Sad -->
+                        <LinearLayout
+                            android:id="@+id/moodSadContainer"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/mood_button_professional_sad"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/ic_mood_sad_professional"
+                                android:tint="@color/colorError" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Sad"
+                                android:textColor="@color/colorTextPrimary"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Mood Journal Card -->
@@ -92,6 +216,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/card_professional_white"
                     android:padding="16dp">
 
                     <TextView
@@ -103,25 +228,74 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
                         android:id="@+id/weekdayRow"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        app:layout_constraintTop_toBottomOf="@id/moodTitle"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="M" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="T" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="W" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="T" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="F" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="S" android:textColor="@android:color/darker_gray"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="S" android:textColor="@android:color/darker_gray"/>
+                        app:layout_constraintTop_toBottomOf="@id/moodTitle">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="M"
+                            android:textColor="#050505" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="W"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="F"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="#000000" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="#000000" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -129,29 +303,83 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        app:layout_constraintTop_toBottomOf="@id/weekdayRow"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="13"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="16"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="19"/>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:text="22"/>
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center">
-                            <LinearLayout android:layout_width="28dp" android:layout_height="28dp" android:background="@drawable/bg_day_selected" android:gravity="center">
-                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="27"/>
+                        app:layout_constraintTop_toBottomOf="@id/weekdayRow">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="13" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="16" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="19" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="22" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="27" />
                             </LinearLayout>
                         </LinearLayout>
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal" android:gravity="center">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:id="@+id/moodPreviewEmoji"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="🙂"
-                                android:textSize="18sp"/>
-                            <ImageView android:layout_width="20dp" android:layout_height="20dp" android:layout_marginStart="8dp" android:src="@drawable/ic_chevron_right"/>
+                                android:textSize="18sp" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="8dp"
+                                android:src="@drawable/ic_chevron_right" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -163,13 +391,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                app:cardBackgroundColor="@color/colorWhite"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/colorWhite">
+                app:cardElevation="4dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/card_professional_white"
                     android:padding="20dp">
 
                     <!-- Header with Icon and Title -->
@@ -177,10 +406,10 @@
                         android:id="@+id/hydrationIcon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/ic_water_drop"
-                        android:background="@drawable/circle_background_primary"
-                        android:padding="12dp"
+                        android:background="@drawable/button_secondary_modern"
                         android:contentDescription="Hydration reminder"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_water_drop"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -188,27 +417,27 @@
                         android:id="@+id/hydrationTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:text="Hydration Reminder"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toStartOf="@id/hydrationAddBtn"
                         app:layout_constraintStart_toEndOf="@id/hydrationIcon"
-                        app:layout_constraintTop_toTopOf="@id/hydrationIcon"
-                        app:layout_constraintEnd_toStartOf="@id/hydrationAddBtn" />
+                        app:layout_constraintTop_toTopOf="@id/hydrationIcon" />
 
                     <TextView
                         android:id="@+id/hydrationSubtitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
                         android:text="Stay hydrated throughout the day"
                         android:textColor="@color/colorTextSecondary"
                         android:textSize="14sp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
+                        app:layout_constraintEnd_toStartOf="@id/hydrationAddBtn"
                         app:layout_constraintStart_toEndOf="@id/hydrationIcon"
-                        app:layout_constraintTop_toBottomOf="@id/hydrationTitle"
-                        app:layout_constraintEnd_toStartOf="@id/hydrationAddBtn" />
+                        app:layout_constraintTop_toBottomOf="@id/hydrationTitle" />
 
                     <!-- Add Button -->
                     <ImageButton
@@ -216,25 +445,25 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/circle_background_primary"
-                        android:src="@android:drawable/ic_input_add"
                         android:contentDescription="Add reminder"
                         android:padding="8dp"
-                        app:tint="@color/colorWhite"
+                        android:src="@android:drawable/ic_input_add"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/hydrationIcon" />
+                        app:layout_constraintTop_toTopOf="@id/hydrationIcon"
+                        app:tint="@color/colorWhite" />
 
                     <!-- Status Section -->
                     <LinearLayout
                         android:id="@+id/hydrationStatusContainer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/rounded_background_light"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:padding="12dp"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/hydrationIcon">
 
                         <ImageView
@@ -247,8 +476,8 @@
                             android:id="@+id/hydrationNextText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
+                            android:layout_weight="1"
                             android:text="Next reminder: 10:00 AM"
                             android:textColor="@color/colorTextPrimary"
                             android:textSize="14sp"
@@ -258,13 +487,12 @@
                             android:id="@+id/hydrationStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Active"
-                            android:textColor="@color/colorSuccess"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:background="@drawable/status_badge_success"
+                            android:background="@drawable/mood_button_professional_happy"
                             android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp" />
+                            android:paddingVertical="4dp"
+                            android:text="Active"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -275,22 +503,22 @@
                         android:layout_width="0dp"
                         android:layout_height="4dp"
                         android:layout_marginTop="12dp"
-                        android:progress="75"
                         android:max="100"
-                        android:progressTint="@color/colorPrimary"
+                        android:progress="75"
                         android:progressBackgroundTint="@color/colorTextSecondary"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:progressTint="@color/colorPrimary"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/hydrationStatusContainer" />
 
                     <TextView
                         android:id="@+id/hydrationProgressText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="3 of 4 reminders today"
                         android:textColor="@color/colorTextSecondary"
                         android:textSize="12sp"
-                        android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/hydrationProgress" />
 
@@ -302,16 +530,17 @@
                 android:id="@+id/moodTrendCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@color/colorWhite"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/colorWhite">
+                app:cardElevation="4dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/card_professional_white"
                     android:padding="20dp">
 
                     <!-- Header Section -->
@@ -319,10 +548,10 @@
                         android:id="@+id/moodTrendIcon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/ic_mood_trend"
                         android:background="@drawable/circle_background_primary"
-                        android:padding="12dp"
                         android:contentDescription="Mood trend"
+                        android:padding="12dp"
+                        android:src="@drawable/ic_mood_trend"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -330,25 +559,25 @@
                         android:id="@+id/moodTrendTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:text="Mood Trend"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toStartOf="@id/moodTrendSubtitle"
                         app:layout_constraintStart_toEndOf="@id/moodTrendIcon"
-                        app:layout_constraintTop_toTopOf="@id/moodTrendIcon"
-                        app:layout_constraintEnd_toStartOf="@id/moodTrendSubtitle" />
+                        app:layout_constraintTop_toTopOf="@id/moodTrendIcon" />
 
                     <TextView
                         android:id="@+id/moodTrendSubtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Last 7 days"
-                        android:textColor="@color/colorTextSecondary"
-                        android:textSize="14sp"
                         android:background="@drawable/rounded_background_light"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="4dp"
+                        android:text="Last 7 days"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/moodTrendIcon" />
 
@@ -358,11 +587,11 @@
                         android:layout_width="0dp"
                         android:layout_height="200dp"
                         android:layout_marginTop="16dp"
+                        app:cardBackgroundColor="@color/colorWhite"
                         app:cardCornerRadius="12dp"
                         app:cardElevation="2dp"
-                        app:cardBackgroundColor="@color/colorWhite"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/moodTrendIcon">
 
                         <com.sahil.pulseup.ui.LineChartView
@@ -378,20 +607,20 @@
                         android:id="@+id/moodStatsContainer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/rounded_background_light"
+                        android:orientation="horizontal"
                         android:padding="12dp"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/chartContainer">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/avgMoodText"
@@ -412,15 +641,15 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/colorTextSecondary"
-                            android:alpha="0.3" />
+                            android:alpha="0.3"
+                            android:background="@color/colorTextSecondary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/trendText"
@@ -441,15 +670,15 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/colorTextSecondary"
-                            android:alpha="0.3" />
+                            android:alpha="0.3"
+                            android:background="@color/colorTextSecondary" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/streakText"
@@ -481,19 +710,19 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="2dp"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <LinearLayout
@@ -501,12 +730,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:clickable="true"
+                android:contentDescription="Habits"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Habits" >
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -517,16 +746,16 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/navMood"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/navMood"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:clickable="true"
+                android:contentDescription="Mood"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Mood" >
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -536,16 +765,16 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/navProfile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/navProfile"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:clickable="true"
+                android:contentDescription="Profile"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Profile" >
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageView3"

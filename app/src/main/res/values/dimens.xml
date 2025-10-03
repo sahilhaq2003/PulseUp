@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Spacing Tokens -->
+    
+    <!-- Base spacing unit -->
+    <dimen name="spacing_unit">4dp</dimen>
+    
+    <!-- Component spacing -->
+    <dimen name="spacing_xs">4dp</dimen>     <!-- 1sp unit -->
+    <dimen name="spacing_sm">8dp</dimen>     <!-- 2sp units -->
+    <dimen name="spacing_md">12dp</dimen>    <!-- 3sp units -->
+    <dimen name="spacing_lg">16dp</dimen>    <!-- 4sp units -->
+    <dimen name="spacing_xl">20dp</dimen>    <!-- 5sp units -->
+    <dimen name="spacing_2xl">24dp</dimen>   <!-- 6sp units -->
+    <dimen name="spacing_3xl">32dp</dimen>   <!-- 8sp units -->
+    <dimen name="spacing_4xl">40dp</dimen>   <!-- 10sp units -->
+    
+    <!-- Component dimensions -->
+    <dimen name="component_height_xs">24dp</dimen>
+    <dimen name="component_height_sm">32dp</dimen>
+    <dimen name="component_height_md">40dp</dimen>
+    <dimen name="component_height_lg">48dp</dimen>
+    <dimen name="component_height_xl">56dp</dimen>
+    <dimen name="component_height_2xl">64dp</dimen>
+    <dimen name="component_height_3xl">80dp</dimen>
+    
+    <!-- Icon sizes -->
+    <dimen name="icon_size_xs">16dp</dimen>
+    <dimen name="icon_size_sm">20dp</dimen>
+    <dimen name="icon_size_md">24dp</dimen>
+    <dimen name="icon_size_lg">32dp</dimen>
+    <dimen name="icon_size_xl">40dp</dimen>
+    <dimen name="icon_size_2xl">48dp</dimen>
+    
+    <!-- Border radius -->
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+    <dimen name="radius_2md">20dp</dimen>
+    <dimen name="radius_xl">24dp</dimen>
+    <dimen name="radius_2xl">32dp</dimen>
+    
+    <!-- Elevation -->
+    <dimen name="elevation_none">0dp</dimen>
+    <dimen name="elevation_1">2dp</dimen>
+    <dimen name="elevation_2">4dp</dimen>
+    <dimen name="elevation_3">8dp</dimen>
+    <dimen name="elevation_4">12dp</dimen>
+    <dimen name="elevation_5">16dp</dimen>
+    
+    <!-- Layout margins -->
+    <dimen name="layout_margin_xs">4dp</dimen>
+    <dimen name="layout_margin_sm">8dp</dimen>
+    <dimen name="layout_margin_md">12dp</dimen>
+    <dimen name="layout_margin_lg">16dp</dimen>
+    <dimen name="layout_margin_xl">20dp</dimen>
+    <dimen name="layout_margin_2xl">24dp</dimen>
+    <dimen name="layout_margin_3xl">32dp</dimen>
+    
+    <!-- Padding -->
+    <dimen name="padding_xs">4dp</dimen>
+    <dimen name="padding_sm">8dp</dimen>
+    <dimen name="padding_md">12dp</dimen>
+    <dimen name="padding_lg">16dp</dimen>
+    <dimen name="padding_xl">20dp</dimen>
+    <dimen name="padding_2xl">24dp</dimen>
+    <dimen name="padding_3xl">32dp</dimen>
+    
+    <!-- Bottom navigation -->
+    <dimen name="bottom_nav_height">70dp</dimen>
+    <dimen name="bottom_nav_margin">16dp</dimen>
+    
+    <!-- Cards -->
+    <dimen name="card_elevation_default">4dp</dimen>
+    <dimen name="card_elevation_pressed">8dp</dimen>
+    <dimen name="card_margin_horizontal">16dp</dimen>
+    <dimen name="card_padding_default">20dp</dimen>
+    
+    <!-- Text fields -->
+    <dimen name="textfield_height">56dp</dimen>
+    <dimen name="textfield_padding_horizontal">16dp</dimen>
+    <dimen name="textfield_padding_vertical">16dp</dimen>
+    
+    <!-- Buttons -->
+    <dimen name="button_height_default">48dp</dimen>
+    <dimen name="button_height_large">56dp</dimen>
+    <dimen name="button_padding_horizontal">24dp</dimen>
+    <dimen name="button_padding_vertical">16dp</dimen>
+</resources>

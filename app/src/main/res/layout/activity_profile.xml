@@ -16,32 +16,38 @@
         android:padding="24dp">
 
         <!-- Header Section -->
+
         <ImageView
             android:id="@+id/backBtn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_back"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/circle_bg"
+            android:contentDescription="@string/back"
             android:padding="12dp"
-            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.034"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Profile Photo Section -->
         <TextView
             android:id="@+id/headerTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="219dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
             android:text="Profile Settings"
+            android:textColor="@color/colorTextPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/colorTextPrimary"
-            android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/backBtn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/backBtn"
-            android:layout_marginStart="16dp" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/backBtn"
+            app:layout_constraintTop_toTopOf="@id/backBtn" />
 
-        <!-- Profile Photo Section -->
         <androidx.cardview.widget.CardView
             android:id="@+id/profilePhotoCard"
             android:layout_width="wrap_content"

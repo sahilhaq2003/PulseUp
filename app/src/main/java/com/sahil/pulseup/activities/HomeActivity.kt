@@ -63,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
 
+        setupMoodSelection()
         lineChart = findViewById(R.id.lineChart)
         loadHabits()
         updateMoodTrendChart()
@@ -84,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
             val day = today.get(Calendar.DAY_OF_MONTH)
             val moods = com.sahil.pulseup.data.MoodPrefs.loadMoods(this, month, year)
             val preview = findViewById<TextView>(R.id.moodPreviewEmoji)
-            preview?.text = moods[day] ?: "🙂"
+            preview?.text = moods[day] ?: getString(R.string.default_mood)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -99,9 +100,9 @@ class HomeActivity : AppCompatActivity() {
         try {
             // Map emojis to scores 0..1 for simple charting
             fun emojiToScore(emoji: String?): Float = when (emoji) {
-                "😊" -> 0.8f
-                "😐" -> 0.5f
-                "😡" -> 0.1f
+                getString(R.string.mood_happy) -> 0.8f
+                getString(R.string.mood_neutral) -> 0.5f
+                getString(R.string.mood_angry) -> 0.1f
                 else -> 0.6f
             }
 
@@ -138,7 +139,7 @@ class HomeActivity : AppCompatActivity() {
         if (habits.isEmpty()) {
             // Show empty state
             val emptyView = TextView(this).apply {
-                text = "No habits yet. Tap + to add your first habit!"
+                text = getString(R.string.no_habits_yet)
                 textSize = 16f
                 setTextColor(resources.getColor(android.R.color.darker_gray, null))
                 gravity = android.view.Gravity.CENTER
@@ -158,12 +159,12 @@ class HomeActivity : AppCompatActivity() {
         // Add "See More" button if there are more than 2 habits
         if (habits.size > 2) {
             val seeMoreButton = Button(this).apply {
-                text = "See More (${habits.size - 2} more)"
+                text = getString(R.string.see_more_habits, habits.size - 2)
                 textSize = 14f
                 setTextColor(resources.getColor(R.color.colorWhite, null))
                 setPadding(24, 12, 24, 12)
                 // Add rounded corners
-                background = resources.getDrawable(R.drawable.rounded_button_bg, null)
+                background = resources.getDrawable(R.drawable.button_corporate, null)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -192,7 +193,29 @@ class HomeActivity : AppCompatActivity() {
         val deleteBtn = habitView.findViewById<ImageView>(R.id.habitDeleteBtn)
         
         titleText.text = habit.title
+        
+        // Update progress percentage text if it exists
+        val progressPercentText = habitView.findViewById<TextView>(R.id.habitProgressPercent)
+        val streakText = habitView.findViewById<TextView>(R.id.habitStreak)
+        
         updateHabitProgress(habit, progressText, progressBar, checkbox)
+        
+        // Update additional UI elements if they exist
+        val progress = HabitPrefs.getProgress(this, habit.id)
+        val percentage = if (habit.targetPerDay > 0) {
+            ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+        } else {
+            0
+        }
+        
+        progressPercentText?.text = "$percentage%"
+        
+        if (progress >= habit.targetPerDay) {
+            streakText?.visibility = View.VISIBLE
+            streakText?.text = "🔥 ${progress} day streak"
+        } else {
+            streakText?.visibility = View.GONE
+        }
         
         // Checkbox click - toggle completion
         checkbox.setOnCheckedChangeListener { _, isChecked ->
@@ -205,6 +228,23 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
             updateHabitProgress(habit, progressText, progressBar, checkbox)
+            
+            // Update additional UI elements
+            val progress = HabitPrefs.getProgress(this, habit.id)
+            val percentage = if (habit.targetPerDay > 0) {
+                ((progress.toFloat() / habit.targetPerDay) * 100).toInt()
+            } else {
+                0
+            }
+            
+            progressPercentText?.text = "$percentage%"
+            
+            if (progress >= habit.targetPerDay) {
+                streakText?.visibility = View.VISIBLE
+                streakText?.text = "🔥 ${progress} day streak"
+            } else {
+                streakText?.visibility = View.GONE
+            }
         }
         
         // Edit button
@@ -215,13 +255,13 @@ class HomeActivity : AppCompatActivity() {
         // Delete button
         deleteBtn.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("Delete Habit")
-                .setMessage("Are you sure you want to delete '${habit.title}'?")
-                .setPositiveButton("Delete") { _, _ ->
+                .setTitle(getString(R.string.delete_habit))
+                .setMessage(getString(R.string.delete_habit_confirm, habit.title))
+                .setPositiveButton(getString(R.string.delete)) { _, _ ->
                     HabitPrefs.deleteHabit(this, habit.id)
                     loadHabits()
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         }
         
@@ -243,9 +283,8 @@ class HomeActivity : AppCompatActivity() {
         val targetInput = dialogView.findViewById<EditText>(R.id.habitTargetInput)
         
         AlertDialog.Builder(this)
-            .setTitle("Add New Habit")
             .setView(dialogView)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.add)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -253,7 +292,7 @@ class HomeActivity : AppCompatActivity() {
                     HabitPrefs.addHabit(this, title, target)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -269,9 +308,8 @@ class HomeActivity : AppCompatActivity() {
         targetInput.setText(habit.targetPerDay.toString())
         
         AlertDialog.Builder(this)
-            .setTitle("Edit Habit")
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
+            .setPositiveButton(getString(R.string.save)) { _, _ ->
                 val title = titleInput.text.toString().trim()
                 val target = targetInput.text.toString().toIntOrNull() ?: 1
                 
@@ -280,10 +318,117 @@ class HomeActivity : AppCompatActivity() {
                     HabitPrefs.updateHabit(this, updatedHabit)
                     loadHabits()
                 } else {
-                    Toast.makeText(this, "Please enter a habit title", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.please_enter_habit_title), Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun setupMoodSelection() {
+        val moodPrefs = getSharedPreferences("MoodPrefs", MODE_PRIVATE)
+        
+        // Setup mood selection listeners
+        findViewById<LinearLayout>(R.id.moodHappyContainer)?.setOnClickListener {
+            saveTodayMood("Happy")
+            showMoodSelectedFeedback("Happy")
+        }
+        
+        findViewById<LinearLayout>(R.id.moodNeutralContainer)?.setOnClickListener {
+            saveTodayMood("Neutral")
+            showMoodSelectedFeedback("Neutral")
+        }
+        
+        findViewById<LinearLayout>(R.id.moodSadContainer)?.setOnClickListener {
+            saveTodayMood("Sad")
+            showMoodSelectedFeedback("Sad")
+        }
+        
+        // Show today's mood if already selected
+        loadTodayMood()
+    }
+    
+    private fun saveTodayMood(mood: String) {
+        val moodPrefs = getSharedPreferences("MoodPrefs", MODE_PRIVATE)
+        val editor = moodPrefs.edit()
+        
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        editor.putString("today_mood", mood)
+        editor.putString("today_mood_date", today)
+        editor.apply()
+        
+        // Also save to the mood journal calendar system
+        val calendar = java.util.Calendar.getInstance()
+        val year = calendar.get(java.util.Calendar.YEAR)
+        val month = calendar.get(java.util.Calendar.MONTH)
+        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+        
+        // Convert mood text to emoji
+        val moodEmoji = when (mood) {
+            "Happy" -> "😊"
+            "Neutral" -> "😐"
+            "Sad" -> "😡"
+            else -> "😐"
+        }
+        
+        // Save to mood journal calendar
+        com.sahil.pulseup.data.MoodPrefs.setMood(this, year, month, day, moodEmoji)
+        
+        // Update the mood trend chart
+        updateMoodTrendChart()
+    }
+    
+    private fun loadTodayMood() {
+        // First check if we have today's mood from the simple selection
+        val moodPrefs = getSharedPreferences("MoodPrefs", MODE_PRIVATE)
+        val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        val savedDate = moodPrefs.getString("today_mood_date", "")
+        val savedMood = moodPrefs.getString("today_mood", "")
+        
+        if (savedDate == today && !savedMood.isNullOrEmpty()) {
+            highlightSelectedMood(savedMood)
+        } else {
+            // Check if mood was set through mood journal calendar
+            val calendar = java.util.Calendar.getInstance()
+            val year = calendar.get(java.util.Calendar.YEAR)
+            val month = calendar.get(java.util.Calendar.MONTH)
+            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+            
+            val moodEmoji = com.sahil.pulseup.data.MoodPrefs.getMood(this, year, month, day)
+            moodEmoji?.let { emoji ->
+                val moodText = when (emoji) {
+                    "😊" -> "Happy"
+                    "😐" -> "Neutral"
+                    "😡" -> "Sad"
+                    else -> null
+                }
+                if (moodText != null) {
+                    highlightSelectedMood(moodText)
+                }
+            }
+        }
+    }
+    
+    private fun highlightSelectedMood(mood: String) {
+        // Reset all mood containers first
+        findViewById<LinearLayout>(R.id.moodHappyContainer)?.alpha = 0.7f
+        findViewById<LinearLayout>(R.id.moodNeutralContainer)?.alpha = 0.7f
+        findViewById<LinearLayout>(R.id.moodSadContainer)?.alpha = 0.7f
+        
+        // Highlight selected mood
+        when (mood) {
+            "Happy" -> findViewById<LinearLayout>(R.id.moodHappyContainer)?.alpha = 1.0f
+            "Neutral" -> findViewById<LinearLayout>(R.id.moodNeutralContainer)?.alpha = 1.0f
+            "Sad" -> findViewById<LinearLayout>(R.id.moodSadContainer)?.alpha = 1.0f
+        }
+    }
+    
+    private fun showMoodSelectedFeedback(mood: String) {
+        highlightSelectedMood(mood)
+        Toast.makeText(this, "Mood recorded: $mood", Toast.LENGTH_SHORT).show()
     }
 }
