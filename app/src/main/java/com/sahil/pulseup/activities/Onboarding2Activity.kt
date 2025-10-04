@@ -15,16 +15,17 @@ class Onboarding2Activity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_onboarding2)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.third_main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val nextButton = findViewById<Button>(R.id.nextButton)
+        val nextButton = findViewById<Button>(R.id.nextButton3)
         nextButton.setOnClickListener {
             val intent = Intent(this, Onboarding3Activity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }
