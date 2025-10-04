@@ -10,10 +10,12 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.sahil.pulseup.R
 import com.sahil.pulseup.activities.*
+import com.sahil.pulseup.activities.MainFragmentActivity
 import com.sahil.pulseup.data.HabitPrefs
 
 class HabitsFragment : Fragment() {
     private lateinit var habitsContainer: LinearLayout
+    private var showAllHabits = true  // Show all habits by default in fragment mode
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,18 +37,32 @@ class HabitsFragment : Fragment() {
         
         // Back button
         view.findViewById<ImageView>(R.id.backBtn)?.setOnClickListener {
-            requireActivity().finish()
+            // Switch back to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
+        }
+        
+        // Add navigation functionality to header
+        view.findViewById<LinearLayout>(R.id.header)?.setOnClickListener {
+            showAllHabits = !showAllHabits
+            loadHabits()
         }
         
         // Bottom navigation
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Switch to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navHabits)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
-            startActivity(Intent(requireContext(), CalendarActivity::class.java))
+            // Switch to MoodJournalFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())
         }
         view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
             // Already on Habits - do nothing
         }
         view.findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            // Switch to SettingsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(SettingsFragment())
         }
         
         loadHabits()

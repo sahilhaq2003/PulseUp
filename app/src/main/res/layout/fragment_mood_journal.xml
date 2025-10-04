@@ -5,7 +5,7 @@
     android:id="@+id/calendar_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA"
+    android:background="@color/colorBackground"
     tools:context=".fragments.MoodJournalFragment">
 
     <ScrollView
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="@dimen/padding_2xl">
 
             <!-- Header -->
             <LinearLayout
@@ -42,11 +42,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/spacing_lg"
                     android:text="Mood Journal"
-                    android:textColor="@android:color/black"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    style="@style/TextAppearance.PulseUp.Title1" />
 
                 <View
                     android:layout_width="0dp"
@@ -64,123 +62,163 @@
             </LinearLayout>
 
             <!-- Month Selector -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/mood_professional_happy"
-                android:gravity="center">
+                android:layout_marginTop="@dimen/spacing_2xl"
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
-                <ImageView
-                    android:id="@+id/prevMonth"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@android:drawable/ic_media_previous"
-                    app:tint="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/monthTitle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="32dp"
-                    android:text="July 2025"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/calendar_header_professional"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:padding="@dimen/padding_2xl">
 
-                <ImageView
-                    android:id="@+id/nextMonth"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="6dp"
-                    android:src="@android:drawable/ic_media_next"
-                    app:tint="@android:color/darker_gray" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/prevMonth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/calendar_nav_button"
+                        android:contentDescription="@string/previous"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_back" />
 
-            <!-- Weekday Headers -->
-            <LinearLayout
+                    <TextView
+                        android:id="@+id/monthTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="July 2025"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/nextMonth"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/calendar_nav_button"
+                        android:contentDescription="@string/next"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_arrow_forward" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Calendar -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/mood_professional_happy"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                android:background="@drawable/card_professional"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Mon"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    android:background="@drawable/calendar_day_cell"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:padding="24dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Tue"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                    <!-- Weekdays Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Wed"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="M"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Thu"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Fri"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="W"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Sat"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="T"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Sun"
-                    android:textColor="@android:color/darker_gray"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="F"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-            <!-- Calendar Grid -->
-            <GridLayout
-                android:id="@+id/daysGrid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:columnCount="7"
-                android:rowCount="6" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="S"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Days Grid -->
+                    <GridLayout
+                        android:id="@+id/daysGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="7"
+                        android:rowCount="6"
+                        android:useDefaultMargins="true" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
     </ScrollView>
@@ -189,10 +227,10 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="2dp"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -200,66 +238,133 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/navBackground"
             android:orientation="horizontal"
-            android:background="@android:color/white"
-            android:weightSum="3">
+            android:weightSum="4"
+            android:padding="@dimen/spacing_sm">
+
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Home"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
+
+                <ImageView
+                    android:id="@+id/imageViewHome"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_home_simple" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/navHabits"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
+                android:contentDescription="Habits"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Habits" >
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="64dp"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_habits_simple" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/habits" />
+                    android:text="Habits"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/navMood"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/navMood"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
+                android:contentDescription="Mood"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Mood" >
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="86dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@mipmap/moods" />
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_mood_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mood"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/navProfile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/navProfile"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
+                android:contentDescription="Profile"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Profile" >
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView3"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_person_24" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="43dp"
-                    app:srcCompat="@mipmap/prof" />
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

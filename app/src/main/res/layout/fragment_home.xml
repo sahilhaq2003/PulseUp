@@ -34,7 +34,7 @@
             android:id="@+id/addHabitBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/fab_professional_orange_refined"
+            android:background="@drawable/dot_active"
             android:contentDescription="Add Habit"
             android:padding="8dp"
             android:src="@android:drawable/ic_input_add"
@@ -721,27 +721,70 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:background="@color/navBackground"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="4"
+            android:padding="@dimen/spacing_sm">
+
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Home"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
+
+                <ImageView
+                    android:id="@+id/imageViewHome"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_home_simple" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/navHabits"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
                 android:contentDescription="Habits"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="64dp"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_habits_simple" />
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@mipmap/habits" />
+                    android:text="Habits"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
@@ -750,18 +793,30 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
                 android:contentDescription="Mood"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="86dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@mipmap/moods" />
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_mood_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mood"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -769,18 +824,30 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
                 android:clickable="true"
                 android:contentDescription="Profile"
                 android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
                 <ImageView
                     android:id="@+id/imageView3"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_person_24" />
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="43dp"
-                    app:srcCompat="@mipmap/prof" />
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

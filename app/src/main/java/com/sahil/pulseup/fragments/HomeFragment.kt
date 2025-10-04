@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.sahil.pulseup.R
 import com.sahil.pulseup.activities.*
+import com.sahil.pulseup.activities.MainFragmentActivity
 import com.sahil.pulseup.data.HabitPrefs
 import com.sahil.pulseup.data.MoodPrefs
 import com.sahil.pulseup.data.HydrationPrefs
@@ -43,18 +44,26 @@ class HomeFragment : Fragment() {
 
         val moodJournalCard: CardView = view.findViewById(R.id.moodJournalCard)
         moodJournalCard.setOnClickListener {
-            startActivity(Intent(requireContext(), CalendarActivity::class.java))
+            // Switch to MoodJournalFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())
         }
 
-        // Bottom nav: open Mood (calendar) or Profile
+        // Bottom nav: open Home, Mood (calendar) or Profile
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Already on Home - do nothing
+        }
+        view.findViewById<LinearLayout>(R.id.navHome)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
-            startActivity(Intent(requireContext(), CalendarActivity::class.java))
+            // Switch to MoodJournalFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())
         }
         view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
-            startActivity(Intent(requireContext(), HabitsActivity::class.java))
+            // Switch to HabitsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HabitsFragment())
         }
         view.findViewById<LinearLayout>(R.id.navProfile)?.setOnClickListener {
-            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            // Switch to SettingsFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(SettingsFragment())
         }
 
         lineChart = view.findViewById(R.id.lineChart)
@@ -175,18 +184,18 @@ class HomeFragment : Fragment() {
             
             // Update status and next reminder text
             val isEnabled = HydrationPrefs.isEnabled(requireContext())
-            if (isEnabled) {
-                statusText?.text = "Active"
-                statusText?.setTextColor(resources.getColor(android.R.color.holo_green_dark, null))
-                statusText?.background = resources.getDrawable(R.drawable.status_badge_success, null)
+             if (isEnabled) {
+                 statusText?.text = "Active"
+                 statusText?.setTextColor(resources.getColor(R.color.colorWhite, null))
+                 statusText?.background = resources.getDrawable(R.drawable.status_badge_professional_active, null)
                 
                 // Show the actual next reminder time
                 val nextReminderTime = getNextReminderTime()
                 nextText?.text = "Next reminder: $nextReminderTime"
-            } else {
-                statusText?.text = "Inactive"
-                statusText?.setTextColor(resources.getColor(android.R.color.darker_gray, null))
-                statusText?.background = resources.getDrawable(R.drawable.status_badge_success, null)
+             } else {
+                 statusText?.text = "Inactive"
+                 statusText?.setTextColor(resources.getColor(R.color.colorWhite, null))
+                 statusText?.background = resources.getDrawable(R.drawable.status_badge_professional_inactive, null)
                 nextText?.text = "No reminders set"
             }
             
@@ -290,7 +299,7 @@ class HomeFragment : Fragment() {
                 setTextColor(resources.getColor(R.color.colorWhite, null))
                 setPadding(24, 12, 24, 12)
                 // Add rounded corners
-                background = resources.getDrawable(R.drawable.button_corporate, null)
+                background = resources.getDrawable(R.drawable.button_professional_subtle, null)
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -300,7 +309,8 @@ class HomeFragment : Fragment() {
             }
             
             seeMoreButton.setOnClickListener {
-                startActivity(Intent(requireContext(), HabitsActivity::class.java))
+                // Switch to HabitsFragment using MainFragmentActivity
+                (requireActivity() as MainFragmentActivity).loadFragment(HabitsFragment())
             }
             
             habitsContainer.addView(seeMoreButton)

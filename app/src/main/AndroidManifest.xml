@@ -17,15 +17,6 @@
         android:theme="@style/Theme.PulseUp"
         tools:targetApi="31">
         <activity
-            android:name=".activities.CalendarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.HabitsActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ForgetPasswordActivity"
             android:exported="false" />
         <activity
@@ -55,7 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ProfileActivity"/>
         <activity android:name=".activities.CreateReminderActivity" android:exported="false" />
     </application>
 

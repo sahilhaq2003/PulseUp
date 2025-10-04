@@ -7,166 +7,248 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="#FAFAFA"
+    android:background="@color/colorBackground"
     tools:context=".MainFragmentActivity">
 
-    <!-- Left Panel - Navigation -->
+    <!-- Left Panel - Professional Navigation Sidebar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/navigation_panel"
-        android:layout_width="240dp"
+        android:layout_width="260dp"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp">
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@android:color/white"
-            android:padding="12dp">
+            android:fillViewport="true">
 
-            <!-- App Title -->
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PulseUp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:gravity="center"
-                android:padding="12dp" />
+                android:orientation="vertical"
+                android:background="@drawable/card_professional_white"
+                android:padding="@dimen/padding_2xl">
 
-            <!-- Navigation Items -->
-            <LinearLayout
-                android:id="@+id/nav_home"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
+                <!-- Home Navigation -->
+                <LinearLayout
+                    android:id="@+id/nav_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_lg"
+                    android:background="@drawable/card_professional"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/habits"
-                    android:layout_marginEnd="12dp" />
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:src="@drawable/baseline_home_24"
+                        app:tint="@color/navSelected" />
 
-                <TextView
-                    android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Home"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/dot_active"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <!-- Habits Navigation -->
+                <LinearLayout
+                    android:id="@+id/nav_habits"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_lg"
+                    android:background="@drawable/card_professional"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:src="@drawable/ic_habit" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Habits"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTextPrimary" />
+
+                    <View
+                        android:id="@+id/habits_indicator"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/dot_inactive" />
+                </LinearLayout>
+
+                <!-- Mood Journal Navigation -->
+                <LinearLayout
+                    android:id="@+id/nav_mood"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_lg"
+                    android:background="@drawable/card_professional"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:src="@drawable/ic_mood_trend"
+                        app:tint="@color/colorTextPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mood Journal"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTextPrimary" />
+
+                    <View
+                        android:id="@+id/mood_indicator"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/dot_inactive" />
+                </LinearLayout>
+
+                <!-- Settings Navigation -->
+                <LinearLayout
+                    android:id="@+id/nav_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/padding_lg"
+                    android:background="@drawable/card_professional"
+                    android:layout_marginBottom="@dimen/spacing_2xl"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:stateListAnimator="@null">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/colorTextPrimary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Settings"
+                        android:textSize="16sp"
+                        android:textColor="@color/colorTextPrimary" />
+
+                    <View
+                        android:id="@+id/settings_indicator"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/dot_inactive" />
+                </LinearLayout>
+
+                <!-- User Info & Logout Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Home"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
+                    android:orientation="vertical"
+                    android:background="@drawable/card_professional"
+                    android:padding="@dimen/padding_lg">
+
+                    <!-- User Info -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_lg">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@mipmap/profile"
+                            android:background="@drawable/circle_background_primary"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="@dimen/spacing_sm" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="User Profile"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Logout Button -->
+                    <Button
+                        android:id="@+id/logout_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Sign Out"
+                        android:textColor="@color/colorError"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:background="@drawable/button_outline_professional"
+                        android:drawableStart="@drawable/ic_logout"
+                        android:drawablePadding="@dimen/spacing_sm"
+                        android:paddingHorizontal="@dimen/padding_lg"
+                        android:paddingVertical="@dimen/padding_sm"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
             </LinearLayout>
+        </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/nav_habits"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/habits"
-                    android:layout_marginEnd="12dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Habits"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_mood"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/moods"
-                    android:layout_marginEnd="12dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Mood Journal"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_settings"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/prof"
-                    android:layout_marginEnd="12dp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Settings"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <!-- Spacer -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <!-- Logout Button -->
-            <Button
-                android:id="@+id/logout_btn"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Logout"
-                android:textSize="12sp"
-                android:textColor="@color/colorWhite"
-                android:backgroundTint="@color/colorPrimary" />
-
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Right Panel - Content -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <!-- Right Panel - Content Area -->
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_margin="8dp" />
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

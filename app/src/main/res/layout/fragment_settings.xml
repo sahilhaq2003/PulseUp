@@ -1,239 +1,568 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile_scroll"
+    android:id="@+id/profile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/colorWhite">
+    android:background="@color/colorBackground"
+    tools:context=".fragments.SettingsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/profile_root"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/profilePhoto"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/circle_bg"
-        android:clipToOutline="true"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/profile"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ScrollView
+        android:id="@+id/profile_scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.113" />
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
 
-    <EditText
-        android:id="@+id/phoneInput"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <!-- Header Section -->
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/circle_bg"
+                android:contentDescription="@string/back"
+                android:padding="12dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.034"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Profile Photo Section -->
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="219dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Profile Settings"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/backBtn"
+                app:layout_constraintTop_toTopOf="@id/backBtn" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/profilePhotoCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerTitle">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="24dp">
+
+                    <ImageView
+                        android:id="@+id/profilePhoto"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:background="@drawable/circle_background_primary"
+                        android:clipToOutline="true"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/profile"
+                        android:contentDescription="Profile photo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/changePhotoBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Change Photo"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorPrimary"
+                        android:background="@drawable/button_outline_background"
+                        android:paddingHorizontal="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/profilePhoto" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Personal Information Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/personalInfoCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profilePhotoCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Personal Information"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Full Name"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:hintTextColor="@color/colorTextSecondary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nameInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:textColor="@color/colorTextPrimary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Email Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Email Address"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:hintTextColor="@color/colorTextSecondary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/colorTextPrimary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Phone Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:hint="Phone Number"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:hintTextColor="@color/colorTextSecondary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/phoneInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:textColor="@color/colorTextPrimary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/saveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Save Changes"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/button_primary_background" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Hydration Settings Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/hydrationSettingsCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/personalInfoCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_water_drop"
+                            app:tint="@color/colorPrimary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:text="Hydration Reminders"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorTextPrimary" />
+
+                        <Switch
+                            android:id="@+id/hydrationSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/SwitchStyle" />
+
+                    </LinearLayout>
+
+                    <!-- Interval Setting -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reminder Interval"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorTextPrimary"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/hydrationIntervalText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Every 2 hours"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorTextSecondary"
+                            android:layout_marginBottom="8dp" />
+
+                        <SeekBar
+                            android:id="@+id/hydrationInterval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="11"
+                            android:progress="1"
+                            android:progressTint="@color/colorPrimary"
+                            android:thumbTint="@color/colorPrimary" />
+
+                    </LinearLayout>
+
+                    <!-- Time Range Settings -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Start Time"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorTextPrimary"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:id="@+id/hydrationStartText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="08:00"
+                                android:textSize="14sp"
+                                android:textColor="@color/colorTextSecondary"
+                                android:layout_marginBottom="8dp" />
+
+                            <SeekBar
+                                android:id="@+id/hydrationStartTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="23"
+                                android:progress="8"
+                                android:progressTint="@color/colorPrimary"
+                                android:thumbTint="@color/colorPrimary" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="End Time"
+                                android:textSize="16sp"
+                                android:textColor="@color/colorTextPrimary"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:id="@+id/hydrationEndText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="22:00"
+                                android:textSize="14sp"
+                                android:textColor="@color/colorTextSecondary"
+                                android:layout_marginBottom="8dp" />
+
+                            <SeekBar
+                                android:id="@+id/hydrationEndTime"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="23"
+                                android:progress="22"
+                                android:progressTint="@color/colorPrimary"
+                                android:thumbTint="@color/colorPrimary" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Account Actions Section -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/accountActionsCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hydrationSettingsCard"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account Actions"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorTextPrimary"
+                        android:layout_marginBottom="20dp" />
+
+                    <Button
+                        android:id="@+id/logoutBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Sign Out"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorError"
+                        android:background="@drawable/button_outline_background"
+                        android:drawableStart="@drawable/ic_logout"
+                        android:drawablePadding="12dp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomNav"
         android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="Phone"
-        android:inputType="phone"
-        android:padding="12dp"
-        android:textColor="@android:color/black"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_margin="@dimen/bottom_nav_margin"
+        app:cardCornerRadius="@dimen/radius_xl"
+        app:cardElevation="@dimen/elevation_2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/emailInput" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/emailInput"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="12dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nameInput" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/navBackground"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:padding="@dimen/spacing_sm">
 
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Logout"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/saveBtn" />
+            <LinearLayout
+                android:id="@+id/navHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Home"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
-    <TextView
-        android:id="@+id/hydrationTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:text="💧 Hydration Reminders"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logoutBtn" />
+                <ImageView
+                    android:id="@+id/imageViewHome"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_home_simple" />
 
-    <Switch
-        android:id="@+id/hydrationSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="Enable reminders"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationTitle" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
 
-    <TextView
-        android:id="@+id/hydrationIntervalText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="Every 2 hour(s)"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationSwitch" />
+            </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/hydrationInterval"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:max="11"
-        android:progress="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationIntervalText" />
+            <LinearLayout
+                android:id="@+id/navHabits"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Habits"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
-    <TextView
-        android:id="@+id/hydrationStartText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="Start: 08:00"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationInterval" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/ic_habits_simple" />
 
-    <SeekBar
-        android:id="@+id/hydrationStartTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:max="23"
-        android:progress="8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationStartText" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Habits"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
 
-    <TextView
-        android:id="@+id/hydrationEndText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="End: 22:00"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationStartTime" />
+            </LinearLayout>
 
-    <SeekBar
-        android:id="@+id/hydrationEndTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="28dp"
-        android:max="23"
-        android:progress="22"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hydrationEndText" />
+            <LinearLayout
+                android:id="@+id/navMood"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Mood"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
-    <Button
-        android:id="@+id/changePhotoBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Change Photo"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profilePhoto" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_mood_24" />
 
-    <EditText
-        android:id="@+id/nameInput"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:padding="12dp"
-        android:textColor="@android:color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changePhotoBtn" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mood"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
 
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Save"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/phoneInput" />
+            </LinearLayout>
 
-        <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/circle_bg"
-            android:contentDescription="@string/back"
-            android:padding="12dp"
-            android:src="@drawable/ic_arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/navProfile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/spacing_xs"
+                android:background="@drawable/nav_item_background"
+                android:clickable="true"
+                android:contentDescription="Profile"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_sm">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="@dimen/icon_size_md"
+                    android:layout_height="@dimen/icon_size_md"
+                    android:layout_marginBottom="@dimen/spacing_xs"
+                    app:srcCompat="@drawable/baseline_person_24" />
 
-</ScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textColor="@color/navText"
+                    android:textSize="10sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
