@@ -48,7 +48,11 @@ class HomeFragment : Fragment() {
             (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())
         }
 
-        // Bottom nav: open Mood (calendar) or Profile
+        // Bottom nav: open Home, Mood (calendar) or Profile
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Already on Home - do nothing
+        }
+        view.findViewById<LinearLayout>(R.id.navHome)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
             // Switch to MoodJournalFragment using MainFragmentActivity
             (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())

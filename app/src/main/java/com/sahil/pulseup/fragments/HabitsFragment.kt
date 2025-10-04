@@ -48,6 +48,11 @@ class HabitsFragment : Fragment() {
         }
         
         // Bottom navigation
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Switch to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navHabits)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
             // Switch to MoodJournalFragment using MainFragmentActivity
             (requireActivity() as MainFragmentActivity).loadFragment(MoodJournalFragment())

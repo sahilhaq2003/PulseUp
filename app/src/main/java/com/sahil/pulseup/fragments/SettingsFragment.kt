@@ -156,6 +156,11 @@ class SettingsFragment : Fragment() {
         }
 
         // Bottom navigation
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Switch to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navProfile)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navHabits)?.setOnClickListener {
             // Switch to HabitsFragment using MainFragmentActivity
             (requireActivity() as MainFragmentActivity).loadFragment(HabitsFragment())

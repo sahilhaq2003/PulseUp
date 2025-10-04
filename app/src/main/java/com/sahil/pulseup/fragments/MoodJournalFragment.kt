@@ -62,6 +62,11 @@ class MoodJournalFragment : Fragment() {
         }
 
         // Bottom nav click handlers
+        view.findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
+            // Switch to HomeFragment using MainFragmentActivity
+            (requireActivity() as MainFragmentActivity).loadFragment(HomeFragment())
+        }
+        view.findViewById<LinearLayout>(R.id.navMood)?.isSelected = true
         view.findViewById<LinearLayout>(R.id.navMood)?.setOnClickListener {
             // already on Mood, do nothing
         }
