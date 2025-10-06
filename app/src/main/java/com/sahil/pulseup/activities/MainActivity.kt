@@ -66,14 +66,13 @@ class MainActivity : AppCompatActivity() {
         if (isFirstLaunch || forceOnboarding) {
             // Mark that onboarding has been shown
             prefs.edit().putBoolean("is_first_launch", false).apply()
-            
+
             // Start onboarding flow
             android.util.Log.d("MainActivity", "Starting onboarding flow")
             startActivity(Intent(this, Onboarding1Activity::class.java))
             finish()
             return
         }
-        
         // If not first launch, proceed with normal flow
         proceedWithAppFlow()
     }
@@ -85,7 +84,6 @@ class MainActivity : AppCompatActivity() {
             finish()
             return
         }
-        
         // If not logged in, go to login
         startActivity(Intent(this, LoginActivity::class.java))
         finish()

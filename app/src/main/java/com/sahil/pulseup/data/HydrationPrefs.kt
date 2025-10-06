@@ -88,16 +88,29 @@ object HydrationPrefs {
         val startHour = getStartHour(context)
         val endHour = getEndHour(context)
         
+        // Check if we have a specific next reminder time set
+        val nextHour = getNextReminderHour(context)
+        val nextMinute = getNextReminderMinute(context)
+        
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
             .build()
+        
+        val initialDelay: Long
+        if (nextHour in 0..23 && nextMinute in 0..59) {
+            // Use specific reminder time
+            initialDelay = calculateDelayToSpecificTime(nextHour, nextMinute)
+        } else {
+            // Use start hour for periodic reminders
+            initialDelay = calculateInitialDelay(startHour)
+        }
             
         val hydrationWork = PeriodicWorkRequest.Builder(
             com.sahil.pulseup.workers.HydrationReminderWorker::class.java,
             intervalHours.toLong(), TimeUnit.HOURS
         )
             .setConstraints(constraints)
-            .setInitialDelay(calculateInitialDelay(startHour), TimeUnit.MINUTES)
+            .setInitialDelay(initialDelay, TimeUnit.MINUTES)
             .addTag(WORK_NAME)
             .build()
             
@@ -124,6 +137,24 @@ object HydrationPrefs {
         else 
             (24 - currentHour + startHour)
         return delayHours * 60L
+    }
+    
+    private fun calculateDelayToSpecificTime(targetHour: Int, targetMinute: Int): Long {
+        val now = Calendar.getInstance()
+        val target = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, targetHour)
+            set(Calendar.MINUTE, targetMinute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        
+        // If the target time has already passed today, schedule for tomorrow
+        if (target.timeInMillis <= now.timeInMillis) {
+            target.add(Calendar.DAY_OF_YEAR, 1)
+        }
+        
+        val delayMillis = target.timeInMillis - now.timeInMillis
+        return delayMillis / (1000 * 60) // Convert to minutes
     }
 
     fun getNextReminderText(context: Context): String {
@@ -191,4 +222,5 @@ object HydrationPrefs {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .getInt(KEY_NEXT_MINUTE, -1)
     }
+    
 }

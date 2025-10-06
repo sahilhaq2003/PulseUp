@@ -54,6 +54,7 @@ class MainFragmentActivity : AppCompatActivity() {
     }
     
     private fun setupTabletNavigation() {
+
         findViewById<LinearLayout>(R.id.nav_home)?.setOnClickListener {
             loadFragment(HomeFragment())
             updateNavigationSelection(R.id.nav_home)
@@ -119,7 +120,7 @@ class MainFragmentActivity : AppCompatActivity() {
         // Update stats in tablet layout
         updateTabletStats()
     }
-    
+
     private fun updateTabletStats() {
         // Update quick stats shown in tablet navigation (only if views exist)
         try {
@@ -138,7 +139,7 @@ class MainFragmentActivity : AppCompatActivity() {
             // Views don't exist, ignore
         }
     }
-    
+
     override fun onResume() {
         super.onResume()
         if (isTabletLayout) {

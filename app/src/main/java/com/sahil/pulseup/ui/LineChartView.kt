@@ -26,7 +26,8 @@ class LineChartView @JvmOverloads constructor(
     private val pointRadius = 6f
     private val lineWidth = 3f
     private val gridLineWidth = 1f
-    
+
+
     // Colors
     private val primaryColor = ContextCompat.getColor(context, R.color.colorPrimary)
     private val gridColor = Color.parseColor("#F0F0F0")

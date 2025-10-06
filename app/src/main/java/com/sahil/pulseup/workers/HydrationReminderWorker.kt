@@ -31,7 +31,7 @@ class HydrationReminderWorker(
         }
     }
 
-    private fun showHydrationNotification() {
+    fun showHydrationNotification() {
         val notificationManager = applicationContext
             .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -43,6 +43,8 @@ class HydrationReminderWorker(
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 description = "Reminds you to stay hydrated"
+                enableVibration(true)
+                setShowBadge(true)
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -58,14 +60,41 @@ class HydrationReminderWorker(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Build notification
+        // Create action intents
+        val snoozeIntent = Intent(applicationContext, HydrationReminderWorker::class.java).apply {
+            action = "SNOOZE_ACTION"
+        }
+        val snoozePendingIntent = PendingIntent.getService(
+            applicationContext,
+            1,
+            snoozeIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val dismissIntent = Intent(applicationContext, HydrationReminderWorker::class.java).apply {
+            action = "DISMISS_ACTION"
+        }
+        val dismissPendingIntent = PendingIntent.getService(
+            applicationContext,
+            2,
+            dismissIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Build notification with enhanced content and actions
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_water_drop)
-            .setContentTitle("Stay Hydrated! 💧")
-            .setContentText("Time for your water break. Your body will thank you!")
+            .setContentTitle("💧 Hydration Reminder")
+            .setContentText("Time to drink water! Stay hydrated for better health.")
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText("Your body needs water to function properly. Take a moment to hydrate yourself. Even mild dehydration can affect your mood and energy levels."))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
+            .setVibrate(longArrayOf(0, 500, 200, 500))
+            .addAction(R.drawable.ic_water_drop, "Snooze 15min", snoozePendingIntent)
+            .addAction(android.R.drawable.ic_menu_close_clear_cancel, "Dismiss", dismissPendingIntent)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
             .build()
 
         // Show notification

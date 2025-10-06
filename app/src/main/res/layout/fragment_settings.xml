@@ -125,21 +125,21 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
                         android:text="Personal Information"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
                         android:textColor="@color/colorTextPrimary"
-                        android:layout_marginBottom="20dp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
                     <!-- Name Input -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:hint="Full Name"
                         app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorTextSecondary"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="@color/colorTextSecondary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/nameInput"
@@ -152,13 +152,13 @@
 
                     <!-- Email Input -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:hint="Email Address"
                         app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorTextSecondary"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="@color/colorTextSecondary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/emailInput"
@@ -171,13 +171,13 @@
 
                     <!-- Phone Input -->
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:hint="Phone Number"
                         app:boxStrokeColor="@color/colorPrimary"
-                        app:hintTextColor="@color/colorTextSecondary"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                        app:hintTextColor="@color/colorTextSecondary">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/phoneInput"
@@ -192,11 +192,11 @@
                         android:id="@+id/saveBtn"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
+                        android:background="@drawable/button_primary_background"
                         android:text="Save Changes"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/colorWhite"
-                        android:background="@drawable/button_primary_background" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -365,6 +365,17 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <!-- Test Notification Button -->
+                    <Button
+                        android:id="@+id/testNotificationBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Test Notification"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button_outline_background"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
