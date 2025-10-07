@@ -42,6 +42,9 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Hide bottom navigation in landscape mode
+        hideBottomNavInLandscape(view)
 
         val backBtn = view.findViewById<ImageView>(R.id.backBtn)
         backBtn.setOnClickListener { 
@@ -65,7 +68,6 @@ class SettingsFragment : Fragment() {
         val hydrationStartText = view.findViewById<TextView>(R.id.hydrationStartText)
         val hydrationEndTime = view.findViewById<SeekBar>(R.id.hydrationEndTime)
         val hydrationEndText = view.findViewById<TextView>(R.id.hydrationEndText)
-        val testNotificationBtn = view.findViewById<Button>(R.id.testNotificationBtn)
 
         // Prefill user data
         UserPrefs.getSavedName(requireContext())?.let { nameInput.setText(it) }
@@ -136,16 +138,6 @@ class SettingsFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        // Test notification button
-        testNotificationBtn.setOnClickListener {
-            // Schedule a test notification for 5 seconds from now
-            val workManager = androidx.work.WorkManager.getInstance(requireContext())
-            val testWork = androidx.work.OneTimeWorkRequest.Builder(com.sahil.pulseup.workers.HydrationReminderWorker::class.java)
-                .setInitialDelay(5, java.util.concurrent.TimeUnit.SECONDS)
-                .build()
-            workManager.enqueue(testWork)
-            Toast.makeText(requireContext(), "Test notification scheduled for 5 seconds!", Toast.LENGTH_SHORT).show()
-        }
 
         saveBtn.setOnClickListener {
             val name = nameInput.text.toString().trim()
@@ -207,5 +199,16 @@ class SettingsFragment : Fragment() {
         view?.findViewById<TextView>(R.id.hydrationIntervalText)?.text = "Every $intervalHours hour(s)"
         view?.findViewById<TextView>(R.id.hydrationStartText)?.text = "Start: ${String.format("%02d:00", startHour)}"
         view?.findViewById<TextView>(R.id.hydrationEndText)?.text = "End: ${String.format("%02d:00", endHour)}"
+    }
+    
+    private fun hideBottomNavInLandscape(view: View) {
+        // Check if we're in tablet/landscape mode
+        val mainActivity = requireActivity() as? MainFragmentActivity
+        val isTabletLayout = mainActivity?.isTabletLayout ?: false
+        
+        // Hide bottom navigation if in landscape mode
+        if (isTabletLayout) {
+            view.findViewById<androidx.cardview.widget.CardView>(R.id.bottomNav)?.visibility = View.GONE
+        }
     }
 }

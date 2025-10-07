@@ -25,6 +25,7 @@ class ForgetPasswordActivity : AppCompatActivity() {
 
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val resetButton = findViewById<Button>(R.id.resetButton)
+        val backToLogin = findViewById<android.widget.TextView>(R.id.backToLogin)
 
         resetButton.setOnClickListener {
             val email = emailInput.text.toString().trim()
@@ -36,6 +37,12 @@ class ForgetPasswordActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+        }
+
+        backToLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

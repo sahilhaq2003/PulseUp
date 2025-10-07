@@ -32,7 +32,19 @@ class LineChartView @JvmOverloads constructor(
     private val primaryColor = ContextCompat.getColor(context, R.color.colorPrimary)
     private val gridColor = Color.parseColor("#F0F0F0")
     private val textColor = Color.parseColor("#666666")
-    private val fillColor = Color.parseColor("#E3F2FD")
+    
+    // Mood-specific colors
+    private val happyColor = Color.parseColor("#4CAF50")      // Green for happy
+    private val neutralColor = Color.parseColor("#FF9800")   // Orange for neutral
+    private val sadColor = Color.parseColor("#F44336")       // Red for sad
+    
+    // Gradient colors for area fill
+    private val happyGradientStart = Color.parseColor("#E8F5E8")  // Light green
+    private val happyGradientEnd = Color.parseColor("#C8E6C9")    // Medium green
+    private val neutralGradientStart = Color.parseColor("#FFF3E0") // Light orange
+    private val neutralGradientEnd = Color.parseColor("#FFE0B2")  // Medium orange
+    private val sadGradientStart = Color.parseColor("#FFEBEE")    // Light red
+    private val sadGradientEnd = Color.parseColor("#FFCDD2")     // Medium red
     
     // Animation
     private var animationProgress = 0f
@@ -83,6 +95,22 @@ class LineChartView @JvmOverloads constructor(
             animatedValues[i] = values[i] * animationProgress
         }
     }
+    
+    private fun getMoodColor(value: Float): Int {
+        return when {
+            value >= 0.7f -> happyColor      // Happy mood
+            value >= 0.3f -> neutralColor    // Neutral mood
+            else -> sadColor                 // Sad mood
+        }
+    }
+    
+    private fun getMoodGradientColors(value: Float): Pair<Int, Int> {
+        return when {
+            value >= 0.7f -> Pair(happyGradientStart, happyGradientEnd)
+            value >= 0.3f -> Pair(neutralGradientStart, neutralGradientEnd)
+            else -> Pair(sadGradientStart, sadGradientEnd)
+        }
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -131,11 +159,17 @@ class LineChartView @JvmOverloads constructor(
         paint.color = gridColor
         paint.strokeWidth = gridLineWidth
         
-        // Horizontal grid lines
-        for (i in 0..4) {
-            val y = chartPadding + (chartHeight / 4) * i
+        // Horizontal grid lines aligned with mood levels
+        val moodValues = arrayOf(0.1f, 0.5f, 0.8f)  // Sad, neutral, happy
+        for (moodValue in moodValues) {
+            val normalizedValue = (moodValue - 0f) / (1f - 0f)
+            val y = height - chartPadding - (chartHeight * normalizedValue)
             canvas.drawLine(chartPadding, y, width - chartPadding, y, paint)
         }
+        
+        // Add top and bottom grid lines
+        canvas.drawLine(chartPadding, chartPadding, width - chartPadding, chartPadding, paint)
+        canvas.drawLine(chartPadding, height - chartPadding, width - chartPadding, height - chartPadding, paint)
         
         // Vertical grid lines
         for (i in 0..6) {
@@ -145,48 +179,61 @@ class LineChartView @JvmOverloads constructor(
     }
     
     private fun drawAreaFill(canvas: Canvas, width: Float, height: Float, chartWidth: Float, chartHeight: Float, minValue: Float, valueRange: Float) {
-        fillPath.reset()
-        
-        for (i in animatedValues.indices) {
-            val x = chartPadding + (chartWidth / (animatedValues.size - 1)) * i
-            val normalizedValue = (animatedValues[i] - minValue) / valueRange
-            val y = height - chartPadding - (chartHeight * normalizedValue)
+        // Draw gradient fills for each segment based on mood values
+        for (i in 0 until animatedValues.size - 1) {
+            val x1 = chartPadding + (chartWidth / (animatedValues.size - 1)) * i
+            val x2 = chartPadding + (chartWidth / (animatedValues.size - 1)) * (i + 1)
             
-            if (i == 0) {
-                fillPath.moveTo(x, height - chartPadding)
-                fillPath.lineTo(x, y)
-            } else {
-                fillPath.lineTo(x, y)
-            }
+            val normalizedValue1 = (animatedValues[i] - minValue) / valueRange
+            val normalizedValue2 = (animatedValues[i + 1] - minValue) / valueRange
+            val y1 = height - chartPadding - (chartHeight * normalizedValue1)
+            val y2 = height - chartPadding - (chartHeight * normalizedValue2)
+            
+            // Create gradient for this segment
+            val gradientColors = getMoodGradientColors((animatedValues[i] + animatedValues[i + 1]) / 2)
+            val gradient = LinearGradient(
+                x1, height - chartPadding,
+                x1, minOf(y1, y2),
+                gradientColors.first,
+                gradientColors.second,
+                android.graphics.Shader.TileMode.CLAMP
+            )
+            
+            // Create path for this segment
+            val segmentPath = Path()
+            segmentPath.moveTo(x1, height - chartPadding)
+            segmentPath.lineTo(x1, y1)
+            segmentPath.lineTo(x2, y2)
+            segmentPath.lineTo(x2, height - chartPadding)
+            segmentPath.close()
+            
+            paint.style = Paint.Style.FILL
+            paint.shader = gradient
+            canvas.drawPath(segmentPath, paint)
         }
         
-        fillPath.lineTo(width - chartPadding, height - chartPadding)
-        fillPath.close()
-        
-        paint.style = Paint.Style.FILL
-        paint.color = fillColor
-        canvas.drawPath(fillPath, paint)
+        paint.shader = null // Reset shader
     }
     
     private fun drawLineChart(canvas: Canvas, width: Float, height: Float, chartWidth: Float, chartHeight: Float, minValue: Float, valueRange: Float) {
-        path.reset()
-        
-        for (i in animatedValues.indices) {
-            val x = chartPadding + (chartWidth / (animatedValues.size - 1)) * i
-            val normalizedValue = (animatedValues[i] - minValue) / valueRange
-            val y = height - chartPadding - (chartHeight * normalizedValue)
+        // Draw line segments with mood-specific colors
+        for (i in 0 until animatedValues.size - 1) {
+            val x1 = chartPadding + (chartWidth / (animatedValues.size - 1)) * i
+            val x2 = chartPadding + (chartWidth / (animatedValues.size - 1)) * (i + 1)
             
-            if (i == 0) {
-                path.moveTo(x, y)
-            } else {
-                path.lineTo(x, y)
-            }
+            val normalizedValue1 = (animatedValues[i] - minValue) / valueRange
+            val normalizedValue2 = (animatedValues[i + 1] - minValue) / valueRange
+            val y1 = height - chartPadding - (chartHeight * normalizedValue1)
+            val y2 = height - chartPadding - (chartHeight * normalizedValue2)
+            
+            // Use average mood value to determine color for this segment
+            val avgValue = (animatedValues[i] + animatedValues[i + 1]) / 2
+            paint.style = Paint.Style.STROKE
+            paint.color = getMoodColor(avgValue)
+            paint.strokeWidth = lineWidth
+            
+            canvas.drawLine(x1, y1, x2, y2, paint)
         }
-        
-        paint.style = Paint.Style.STROKE
-        paint.color = primaryColor
-        paint.strokeWidth = lineWidth
-        canvas.drawPath(path, paint)
     }
     
     private fun drawDataPoints(canvas: Canvas, width: Float, height: Float, chartWidth: Float, chartHeight: Float, minValue: Float, valueRange: Float) {
@@ -197,23 +244,36 @@ class LineChartView @JvmOverloads constructor(
             val normalizedValue = (animatedValues[i] - minValue) / valueRange
             val y = height - chartPadding - (chartHeight * normalizedValue)
             
-            // Draw outer circle (white background)
+            // Draw outer circle (white background with mood-colored border)
             paint.color = Color.WHITE
+            canvas.drawCircle(x, y, pointRadius + 3, paint)
+            
+            // Draw mood-colored border
+            paint.style = Paint.Style.STROKE
+            paint.strokeWidth = 2f
+            paint.color = getMoodColor(animatedValues[i])
             canvas.drawCircle(x, y, pointRadius + 2, paint)
             
-            // Draw inner circle (primary color)
-            paint.color = primaryColor
+            // Draw inner circle (mood color)
+            paint.style = Paint.Style.FILL
+            paint.color = getMoodColor(animatedValues[i])
             canvas.drawCircle(x, y, pointRadius, paint)
         }
     }
     
     private fun drawLabels(canvas: Canvas, width: Float, height: Float, chartWidth: Float, chartHeight: Float) {
-        // Y-axis labels (mood levels)
-        val moodLabels = arrayOf("😊", "😐", "😡")
+        // Y-axis labels (mood levels) - positioned correctly for 0-1 value range
+        val moodLabels = arrayOf("😡", "😐", "😊")  // Bottom to top: sad, neutral, happy
+        val moodValues = arrayOf(0.1f, 0.5f, 0.8f)  // Corresponding values
+        
         for (i in moodLabels.indices) {
-            val y = chartPadding + (chartHeight / 2) * i + (chartHeight / 4)
+            // Calculate Y position based on actual mood value (0-1 range)
+            val normalizedValue = (moodValues[i] - 0f) / (1f - 0f)  // Normalize to 0-1
+            val y = height - chartPadding - (chartHeight * normalizedValue)
+            
             textPaint.textSize = 28f
-            canvas.drawText(moodLabels[i], chartPadding - 30f, y + 10f, textPaint)
+            textPaint.color = textColor
+            canvas.drawText(moodLabels[i], chartPadding - 35f, y + 10f, textPaint)
         }
         
         // X-axis labels (days)

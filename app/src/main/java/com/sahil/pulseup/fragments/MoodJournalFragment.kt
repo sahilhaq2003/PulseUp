@@ -48,6 +48,9 @@ class MoodJournalFragment : Fragment() {
 
         daysGrid = view.findViewById(R.id.daysGrid)
 
+        // Hide bottom navigation in landscape mode
+        hideBottomNavInLandscape(view)
+
         loadMoods()
 
         view.findViewById<ImageView?>(R.id.backBtn)?.setOnClickListener { 
@@ -289,5 +292,16 @@ class MoodJournalFragment : Fragment() {
         }
         
         startActivity(Intent.createChooser(shareIntent, "Share Mood Summary"))
+    }
+    
+    private fun hideBottomNavInLandscape(view: View) {
+        // Check if we're in tablet/landscape mode
+        val mainActivity = requireActivity() as? MainFragmentActivity
+        val isTabletLayout = mainActivity?.isTabletLayout ?: false
+        
+        // Hide bottom navigation if in landscape mode
+        if (isTabletLayout) {
+            view.findViewById<androidx.cardview.widget.CardView>(R.id.bottomNav)?.visibility = View.GONE
+        }
     }
 }

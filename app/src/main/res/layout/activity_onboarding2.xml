@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".Onboarding3">
+    tools:context=".Onboarding2">
 
     <ImageView
         android:id="@+id/illustration"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Track Your Habits"
+        android:text="Track Your Mood"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
@@ -41,7 +41,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
         android:gravity="center"
-        android:text="Set up your daily habits and keep track of your progress"
+        android:text="Record your daily mood and track your emotional well-being over time."
         android:textColor="@color/colorSecondary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"

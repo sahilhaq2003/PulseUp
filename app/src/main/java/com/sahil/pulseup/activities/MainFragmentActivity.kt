@@ -19,7 +19,7 @@ import com.sahil.pulseup.fragments.*
 class MainFragmentActivity : AppCompatActivity() {
     
     private lateinit var currentFragment: Fragment
-    private var isTabletLayout = false
+    var isTabletLayout = false
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

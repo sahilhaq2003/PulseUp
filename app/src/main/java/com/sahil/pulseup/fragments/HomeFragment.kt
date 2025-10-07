@@ -35,6 +35,9 @@ class HomeFragment : Fragment() {
         
         habitsContainer = view.findViewById(R.id.habitsContainer)
         
+        // Hide bottom navigation in landscape mode
+        hideBottomNavInLandscape(view)
+        
         // Add habit button
         view.findViewById<ImageView>(R.id.addHabitBtn)?.setOnClickListener {
             showAddHabitDialog()
@@ -526,5 +529,16 @@ class HomeFragment : Fragment() {
     private fun showMoodSelectedFeedback(mood: String) {
         highlightSelectedMood(mood)
         Toast.makeText(requireContext(), "Mood recorded: $mood", Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun hideBottomNavInLandscape(view: View) {
+        // Check if we're in tablet/landscape mode
+        val mainActivity = requireActivity() as? MainFragmentActivity
+        val isTabletLayout = mainActivity?.isTabletLayout ?: false
+        
+        // Hide bottom navigation if in landscape mode
+        if (isTabletLayout) {
+            view.findViewById<androidx.cardview.widget.CardView>(R.id.bottomNav)?.visibility = View.GONE
+        }
     }
 }

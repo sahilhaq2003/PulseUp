@@ -366,16 +366,6 @@
 
                     </LinearLayout>
 
-                    <!-- Test Notification Button -->
-                    <Button
-                        android:id="@+id/testNotificationBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="Test Notification"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/button_outline_background"
-                        android:textSize="14sp" />
 
                 </LinearLayout>
 
